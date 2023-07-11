@@ -35,8 +35,8 @@ export default function Navbar() {
               </Link>
             </li>
             <li className="nav-item text-light">
-              <Link className="nav-link" to="Categories">
-                Categories
+              <Link className="nav-link" to="SinglePage">
+                SinglePage
               </Link>
             </li>
             <li className="nav-item text-light">
@@ -46,12 +46,12 @@ export default function Navbar() {
             </li>
             <li className="nav-item text-light">
               <Link className="nav-link" to="Contact">
-                Contact
+                Pages 
               </Link>
             </li>
             <li className="nav-item text-light">
               <Link className="nav-link" to="Users">
-                Users
+                Pricing 
               </Link>
             </li>
           </ul>
@@ -61,11 +61,18 @@ export default function Navbar() {
               type="search"
               placeholder="Search"
               aria-label="Search"
+               
             />
             <button className="btn btn-outline-success" type="submit">
               Search
             </button>
           </form>
+          
+          <div className='account flexSB'>
+            <i className='fa fa-search'></i>
+
+          </div>
+          <button className='btn btn-outline-danger'> Subscribe Now </button>
         </div>
       </div>
     </nav>
@@ -73,6 +80,7 @@ export default function Navbar() {
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 function CustomLink({children, ...props}){
   const resolvedPath= useResolvedPath(to)
   const isActive = useMatch({path: resolvedPath.pathname, end: true})

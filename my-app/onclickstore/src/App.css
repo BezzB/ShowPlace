@@ -16,3 +16,8 @@
   width: 150px; /* Maintain the original aspect ratio */
   display: block;
 }
+body{
+  font-family: "Poppins" sans-serif;
+  background-color: #141414;
+  color: #fff;
+}
