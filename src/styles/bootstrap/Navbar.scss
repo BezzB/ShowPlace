@@ -1,0 +1,32 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999; /* Adjust the z-index as needed */
+  box-shadow: 0 13px 24px rgba(0, 0, 0, 0.08);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.nav {
+  position: absolute;
+  top: 0;
+}
+
+/* Other styles for your navbar... */
+
+@media (max-width: 750px) {
+  /* Responsive styles for mobile devices */
+  nav .navbar-collapse.collapse {
+    overflow: hidden;
+  }
+
+  nav .navbar-collapse.active {
+    height: 100vh !important;
+  }
+
+  nav .navbar-collapse {
+    transition: 0.6s all ease-in-out;
+    height: 0 !important;
+  }
+}
