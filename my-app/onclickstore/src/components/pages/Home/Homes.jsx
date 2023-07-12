@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Home from './Home'
 import { homeData } from '../../../dummyData'
-import './home.css'
+import './home.scss'
 
 
 const Homes = () => {

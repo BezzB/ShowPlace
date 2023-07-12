@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import "./trending.css"
+import "./trending.scss"
 import { trending } from '../../../../dummyData'
 import Home from '../Home'
 

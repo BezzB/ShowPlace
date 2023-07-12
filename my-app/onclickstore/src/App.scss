@@ -4,20 +4,21 @@
   display: block; /* Ensure the image is a block-level element */
 }
 
-.navbar-nav li :hover{
+.navbar-nav li :hover {
   background-color: rgb(69, 117, 250);
 }
 
-.navbar-nav li :active{
+.navbar-nav li :active {
   background-color: rgb(4, 25, 83);
 }
-.img-fluid{
+
+.img-fluid {
   height: 40px; /* Adjust the height as needed */
   width: 150px; /* Maintain the original aspect ratio */
   display: block;
 }
-body{
-  font-family: "Poppins" sans-serif;
+
+body {
   background-color: #141414;
   color: #fff;
 }

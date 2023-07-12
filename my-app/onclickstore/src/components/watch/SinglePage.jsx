@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { homeData, recommended } from '../../dummyData'
 import { Upcoming } from '../pages/Home/Upcoming/Upcoming'
-import "./style.css"
+import "./style.scss"
 
 export const SinglePage = () => {
         const { id } = useParams()

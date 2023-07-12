@@ -39,21 +39,7 @@ export default function Navbar() {
                 SinglePage
               </Link>
             </li>
-            <li className="nav-item text-light">
-              <Link className="nav-link" to="Services">
-                Services
-              </Link>
-            </li>
-            <li className="nav-item text-light">
-              <Link className="nav-link" to="Contact">
-                Pages 
-              </Link>
-            </li>
-            <li className="nav-item text-light">
-              <Link className="nav-link" to="Users">
-                Pricing 
-              </Link>
-            </li>
+           
           </ul>
           <form className="d-flex" role="search">
             <input
