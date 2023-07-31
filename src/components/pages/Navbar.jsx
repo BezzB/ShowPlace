@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand-info" to="HomePage">
+        <Link className="navbar-brand-info" to="/">
           {' '}
           <img src="./logos.PNG" className="img-fluid" alt=" OnClickstore" />
         </Link>
@@ -30,13 +30,13 @@ export default function Navbar() {
         >
           <ul className="navbar-nav ms-auto">
             <li className="nav-item text-light active">
-              <Link className="nav-link" to="HomePage">
+              <Link className="nav-link" to="/">
                 Movies
               </Link>
             </li>
             <li className="nav-item text-light">
               <Link className="nav-link" to="SinglePage">
-                SinglePage
+                Series
               </Link>
             </li>
            
@@ -49,13 +49,12 @@ export default function Navbar() {
               aria-label="Search"
                
             />
-            <button className="btn btn-outline-success" type="submit">
+            <button className="btn btn-outline-success mx-2" type="submit">
               Search
             </button>
           </form>
           
-          <div className='account flexSB'>
-            <i className='fa fa-search'></i>
+          <div className='account flexSB'>          
 
           </div>
           <button className='btn btn-outline-danger'> Subscribe Now </button>
