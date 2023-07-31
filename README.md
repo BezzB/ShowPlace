@@ -1,5 +1,5 @@
 
-https://showplace.netlify.app/HomePage
+https://showplacemovies.netlify.app/
 
 ## Overview 
 ![Alt text](public/pageone.PNG)
