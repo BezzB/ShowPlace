@@ -12,7 +12,7 @@ const App = () => {
     <><Navbar />
       <Routes>
         <Route>
-          <Route exact path = "/homePage" element ={<HomePage/> }/>
+          <Route exact path = "/" element ={<HomePage/> }/>
           <Route path='/singlepage/:id' component={SinglePage} exact />         
         </Route>
       </Routes>
