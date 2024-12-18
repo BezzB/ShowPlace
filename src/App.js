@@ -3,19 +3,22 @@ import "./styles/bootstrap/css/bootstrap.min.css"
 import Navbar from './components/pages/Navbar'
 import './App.scss'
 import { Route, Routes } from 'react-router-dom'
-import {HomePage} from "./components/pages/Home/HomePage.jsx"
-import { Footer } from './components/footer/Footer'
+import { HomePage } from "./components/pages/Home/HomePage"
 import { SinglePage } from './components/watch/SinglePage'
+import { Footer } from './components/footer/Footer'
 
 const App = () => {
   return (
-    <><Navbar />
-      <Routes>
-        <Route exact path = "/" element={<HomePage/>} />
-        <Route path='/singlepage/:id' element={<SinglePage/>} />
-      </Routes>
+    <div className="app-container">
+      <Navbar />
+      <main className="main-content">
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route path='/singlepage/:id' element={<SinglePage />} />
+        </Routes>
+      </main>
       <Footer />
-   </>
+    </div>
   )
 }
 

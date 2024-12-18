@@ -1,0 +1,210 @@
+.home-page {
+  min-height: 100vh;
+  background-color: #141414;
+
+  // Hero Section
+  .hero-section {
+    height: 90vh;
+    position: relative;
+    background-color: #000;
+    margin-bottom: 3rem;
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.7) 50%,
+        rgba(0, 0, 0, 0.4) 100%
+      );
+      display: flex;
+      align-items: center;
+      padding: 0 5%;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      color: #fff;
+      animation: fadeInUp 1s ease-out;
+      padding-bottom: 5rem;
+
+      h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .meta {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+
+        span {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          i {
+            color: #3498db;
+          }
+        }
+      }
+
+      .description {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        max-width: 600px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+
+        .btn {
+          padding: 1rem 2rem;
+          font-size: 1.1rem;
+          border-radius: 50px;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          transition: all 0.3s ease;
+
+          &-primary {
+            background: #3498db;
+            border: none;
+
+            &:hover {
+              background: #2980b9;
+              transform: translateY(-2px);
+            }
+          }
+
+          &-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.2);
+              transform: translateY(-2px);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Content Sections
+  section {
+    padding: 3rem 0;
+    position: relative;
+
+    .section-title {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+  }
+
+  // Genres Grid
+  .genres-section {
+    background: linear-gradient(to bottom, #141414, #1a1a1a);
+    padding: 4rem 0;
+
+    .genres-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+
+      .genre-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          transform: translateY(-5px);
+        }
+
+        h3 {
+          color: #fff;
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        span {
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .home-page {
+    .hero-section {
+      height: 80vh;
+
+      .hero-content {
+        padding-bottom: 3rem;
+
+        h1 {
+          font-size: 2.5rem;
+        }
+
+        .meta {
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+
+        .description {
+          font-size: 1rem;
+        }
+
+        .actions {
+          flex-direction: column;
+          
+          .btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      }
+    }
+
+    section {
+      padding: 2rem 0;
+
+      .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
+    }
+  }
+}
