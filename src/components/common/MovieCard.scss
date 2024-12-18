@@ -1,0 +1,170 @@
+.movie-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: #3498db;
+
+    .card-image {
+      img {
+        transform: scale(1.05);
+      }
+      .play-button {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+  }
+
+  .card-image {
+    position: relative;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.8)
+      );
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .rating {
+        align-self: flex-end;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 0.5rem;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+          color: #f1c40f;
+        }
+
+        span {
+          color: #fff;
+          font-weight: 600;
+        }
+      }
+
+      .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        width: 50px;
+        height: 50px;
+        background: #3498db;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+
+        i {
+          color: #fff;
+          font-size: 1.2rem;
+        }
+
+        &:hover {
+          background: #2980b9;
+          transform: translate(-50%, -50%) scale(1.1);
+        }
+      }
+
+      .release-date {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        color: #fff;
+        align-self: flex-start;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .card-content {
+    padding: 1rem;
+
+    h3 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .overview {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-card {
+    .card-image {
+      aspect-ratio: 2/3;
+
+      .card-overlay {
+        padding: 0.5rem;
+
+        .rating {
+          padding: 0.3rem 0.5rem;
+          font-size: 0.8rem;
+        }
+
+        .play-button {
+          width: 40px;
+          height: 40px;
+
+          i {
+            font-size: 1rem;
+          }
+        }
+
+        .release-date {
+          padding: 0.3rem 0.8rem;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .card-content {
+      padding: 0.8rem;
+
+      h3 {
+        font-size: 0.9rem;
+      }
+
+      .overview {
+        font-size: 0.8rem;
+        -webkit-line-clamp: 2;
+      }
+    }
+  }
+} 

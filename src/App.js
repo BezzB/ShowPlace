@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import { HomePage } from "./components/pages/Home/HomePage"
 import { SinglePage } from './components/watch/SinglePage'
 import { Footer } from './components/footer/Footer'
+import GenrePage from './components/pages/Genre/GenrePage'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route path='/singlepage/:id' element={<SinglePage />} />
+          <Route path='/genre/:id' element={<GenrePage />} />
         </Routes>
       </main>
       <Footer />

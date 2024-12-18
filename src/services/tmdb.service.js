@@ -64,7 +64,7 @@ export const tmdbService = {
   getMoviesByGenre: async (genreId, page = 1, options = {}) => {
     try {
       const response = await fetch(
-        `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&page=${page}&include_adult=${TMDB_CONFIG.INCLUDE_ADULT}&include_video=${TMDB_CONFIG.INCLUDE_VIDEO}&sort_by=${options.sortBy || 'popularity.desc'}&vote_average.gte=${options.minRating}&vote_count.gte=${options.minVotes || 100}&with_original_language=${options.language}&year=${options.year}`
+        `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&page=${page}&sort_by=${options.sortBy || 'popularity.desc'}&vote_count.gte=100&include_adult=false`
       );
       const data = await response.json();
       return data;
@@ -114,4 +114,36 @@ export const tmdbService = {
       throw error;
     }
   },
+
+  getGenreDetails: async (genreId) => {
+    try {
+      const [genres, movies] = await Promise.all([
+        tmdbService.getGenres(),
+        tmdbService.getMoviesByGenre(genreId)
+      ]);
+      const genre = genres.find(g => g.id === parseInt(genreId));
+      return {
+        ...genre,
+        movies: movies.results,
+        totalPages: movies.total_pages
+      };
+    } catch (error) {
+      console.error('Error fetching genre details:', error);
+      throw error;
+    }
+  },
+
+  getGenreBackdrops: async (genreId) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&sort_by=popularity.desc&vote_count.gte=1000&include_adult=false`
+      );
+      const data = await response.json();
+      // Return the first movie's backdrop if available
+      return data.results[0]?.backdrop_path || null;
+    } catch (error) {
+      console.error('Error fetching genre backdrop:', error);
+      throw error;
+    }
+  }
 }; 
