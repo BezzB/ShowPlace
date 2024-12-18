@@ -5,6 +5,7 @@ import Trending from './Sections/Trending';
 import TopRated from './Sections/TopRated';
 import Upcoming from './Sections/Upcoming';
 import Genres from './Sections/Genres';
+import Popular from './Sections/Popular';
 import './HomePage.scss';
 
 export const HomePage = () => {
@@ -36,6 +37,7 @@ export const HomePage = () => {
       <TopRated items={topRated} />
       <Upcoming items={upcoming} />
       <Genres genres={genres} />
+      <Popular items={popular?.results || []} />
     </div>
   );
 };

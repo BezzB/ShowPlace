@@ -3,17 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getImageUrl } from '../../../../config/tmdb.config';
 import './Sections.scss';
 
-const Trending = ({ items }) => {
+const Popular = ({ items }) => {
   const navigate = useNavigate();
 
   return (
-    <section className="section trending-section">
+    <section className="section popular-section">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">Trending Now</h2>
+          <h2 className="section-title">Popular on ShowPlace</h2>
           <button 
             className="view-all"
-            onClick={() => navigate('/trending')}
+            onClick={() => navigate('/popular')}
           >
             View All <i className="fas fa-arrow-right"></i>
           </button>
@@ -45,4 +45,4 @@ const Trending = ({ items }) => {
   );
 };
 
-export default Trending; 
+export default Popular; 

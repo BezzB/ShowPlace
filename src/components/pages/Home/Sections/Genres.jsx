@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { tmdbService } from '../../../../services/tmdb.service';
 import { getBackdropUrl } from '../../../../config/tmdb.config';
+import LoadingSpinner from '../../../common/LoadingSpinner';
 import './Sections.scss';
 
 // Genre descriptions
@@ -89,6 +90,7 @@ const Genres = ({ genres }) => {
             </Link>
           ))}
         </div>
+        {loading && <LoadingSpinner />}
       </div>
     </section>
   );

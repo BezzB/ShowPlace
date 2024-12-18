@@ -1,0 +1,61 @@
+@import '../../../styles/pages/SharedPage.scss';
+
+.popular-page {
+  padding-top: 80px;
+  min-height: 100vh;
+  background: #141414;
+
+  .page-header {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, #e74c3c, #c0392b);
+      opacity: 0.1;
+      z-index: -1;
+    }
+  }
+
+  .movies-grid {
+    animation: fadeIn 0.5s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .popular-page {
+    .page-header {
+      padding: 2rem 0;
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .movies-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+  }
+} 

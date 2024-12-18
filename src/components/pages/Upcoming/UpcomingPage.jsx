@@ -1,34 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { tmdbService } from '../../../services/tmdb.service';
 import MovieCard from '../../common/MovieCard';
 import LoadingSpinner from '../../common/LoadingSpinner';
-import './GenrePage.scss';
+import './UpcomingPage.scss';
 
-const GenrePage = () => {
-  const { id } = useParams();
+const UpcomingPage = () => {
   const [movies, setMovies] = useState([]);
-  const [genre, setGenre] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    const fetchGenreDetails = async () => {
+    const fetchMovies = async () => {
       try {
         setLoading(true);
-        // Get genre details
-        const genres = await tmdbService.getGenres();
-        const currentGenre = genres.find(g => g.id === parseInt(id));
-        setGenre(currentGenre);
-
-        // Get movies for this genre
-        const response = await tmdbService.getMoviesByGenre(id, page);
-        if (response.results.length === 0) {
+        const data = await tmdbService.getUpcoming(page);
+        if (data.results.length === 0) {
           setHasMore(false);
         } else {
-          setMovies(prev => [...prev, ...response.results]);
+          setMovies(prev => [...prev, ...data.results]);
         }
       } catch (err) {
         setError(err.message);
@@ -37,8 +28,8 @@ const GenrePage = () => {
       }
     };
 
-    fetchGenreDetails();
-  }, [id, page]);
+    fetchMovies();
+  }, [page]);
 
   const loadMore = () => {
     setPage(prev => prev + 1);
@@ -46,16 +37,13 @@ const GenrePage = () => {
 
   if (loading && page === 1) return <LoadingSpinner />;
   if (error) return <div className="error-message">{error}</div>;
-  if (!genre) return <div className="error-message">Genre not found</div>;
 
   return (
-    <div className="genre-page">
+    <div className="upcoming-page">
       <div className="page-header">
         <div className="container">
-          <h1>{genre.name} Movies</h1>
-          <p className="genre-description">
-            Explore our collection of {genre.name.toLowerCase()} movies
-          </p>
+          <h1>Coming Soon</h1>
+          <p>Upcoming movie releases</p>
         </div>
       </div>
 
@@ -84,4 +72,4 @@ const GenrePage = () => {
   );
 };
 
-export default GenrePage; 
+export default UpcomingPage; 

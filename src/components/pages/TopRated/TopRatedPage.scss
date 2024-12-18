@@ -1,0 +1,28 @@
+@import '../../../styles/pages/SharedPage.scss';
+
+.top-rated-page {
+  padding-top: 80px;
+  min-height: 100vh;
+  background: #141414;
+
+  .page-header {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, #f1c40f, #f39c12);
+      opacity: 0.1;
+      z-index: -1;
+    }
+  }
+
+  .movies-grid {
+    animation: fadeIn 0.5s ease-out;
+  }
+} 
