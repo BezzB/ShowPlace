@@ -1,85 +1,30 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { homeData } from '../../../dummyData'
-import Home from './Home'
-import Upcoming from './Upcoming/Upcoming'
-import './HomePage.scss'
+import React from 'react';
+import { useMovies } from '../../../hooks/useMovies';
+import Popular from './Popular/Popular';
+import LoadingSpinner from '../../common/LoadingSpinner';
+import './HomePage.scss';
 
 export const HomePage = () => {
-  const [items] = useState(homeData)
-  const [featuredMovie, setFeaturedMovie] = useState(null)
+  const { trending, popular, loading, error } = useMovies();
 
-  useEffect(() => {
-    // Get a random movie for the featured section
-    const randomIndex = Math.floor(Math.random() * items.length)
-    setFeaturedMovie(items[randomIndex])
-  }, [items])
-
-  if (!featuredMovie) return null
+  if (loading) return <LoadingSpinner />;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="home-page">
+      {/* Hero Section */}
       <section className="hero-section" style={{ 
-        backgroundImage: `url(${featuredMovie.cover})`,
+        backgroundImage: `url(https://image.tmdb.org/t/p/original${trending[0]?.backdrop_path})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}>
-        <div className="overlay">
-          <div className="hero-content">
-            <h1>{featuredMovie.name}</h1>
-            <div className="meta">
-              <span className="rating">
-                <i className="fa fa-star"></i> {featuredMovie.rating}/5
-              </span>
-              <span className="time">
-                <i className="fa fa-clock"></i> {featuredMovie.time}
-              </span>
-              <span className="genre">
-                <i className="fa fa-film"></i> {featuredMovie.genres}
-              </span>
-            </div>
-            <p className="description">{featuredMovie.desc}</p>
-            <div className="actions">
-              <Link to={`/singlepage/${featuredMovie.id}`} className="btn btn-primary">
-                <i className="fa fa-play me-2"></i> Watch Now
-              </Link>
-              <button className="btn btn-secondary">
-                <i className="fa fa-info-circle me-2"></i> More Info
-              </button>
-            </div>
-          </div>
-        </div>
+        {/* ... hero content ... */}
       </section>
 
-      <section className="trending-section">
-        <div className="container">
-          <h2 className="section-title">Trending Now</h2>
-          <Home items={items.slice(0, 10)} />
-        </div>
-      </section>
+      {/* Popular Section */}
+      <Popular items={popular} />
 
-      <Upcoming />
-
-      <section className="popular-section">
-        <div className="container">
-          <h2 className="section-title">Popular on ShowPlace</h2>
-          <Home items={items.slice(5, 15)} />
-        </div>
-      </section>
-
-      <section className="genres-section">
-        <div className="container">
-          <h2 className="section-title">Browse by Genre</h2>
-          <div className="genres-grid">
-            {['Action', 'Drama', 'Comedy', 'Horror', 'Sci-Fi', 'Romance'].map((genre) => (
-              <div key={genre} className="genre-card">
-                <h3>{genre}</h3>
-                <span>Explore {genre} Movies</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ... other sections ... */}
     </div>
-  )
-}
+  );
+};

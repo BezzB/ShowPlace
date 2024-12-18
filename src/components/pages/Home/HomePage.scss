@@ -195,6 +195,85 @@
       }
     }
   }
+
+  .popular-section {
+    padding: 4rem 0;
+    background: linear-gradient(to bottom, #141414, #1a1a1a);
+  }
+
+  .genres-section {
+    padding: 4rem 0;
+    background: #1a1a1a;
+
+    .genres-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+
+      .genre-card {
+        position: relative;
+        padding: 2rem;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        &:hover {
+          transform: translateY(-5px);
+          border-color: #3498db;
+
+          .explore-link {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        h3 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+          color: #fff;
+        }
+
+        p {
+          color: rgba(255, 255, 255, 0.7);
+          margin-bottom: 1rem;
+        }
+
+        span {
+          color: #3498db;
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+
+        .explore-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: #fff;
+          margin-top: 1rem;
+          font-weight: 500;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: all 0.3s ease;
+
+          i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+          }
+
+          &:hover i {
+            transform: translateX(5px);
+          }
+        }
+      }
+    }
+  }
 }
 
 // Responsive styles
@@ -244,6 +323,21 @@
 
       .container {
         padding: 0 1rem;
+      }
+    }
+
+    .genres-section {
+      .genres-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+
+        .genre-card {
+          min-height: 180px;
+          
+          h3 {
+            font-size: 1.5rem;
+          }
+        }
       }
     }
   }
