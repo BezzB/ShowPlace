@@ -4,7 +4,7 @@ import { trending } from '../../../../dummyData'
 import Home from '../Home'
 
 export const Trending = () => {
-  const [items, setitems]= useState(trending)
+  const [items] = useState(trending)
   return (
     <>
       <section className='trending'>
@@ -13,5 +13,3 @@ export const Trending = () => {
     </>
   )
 }
-
-

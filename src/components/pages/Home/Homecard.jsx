@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SinglePage } from '../../watch/SinglePage';
 
 export const Homecard = ({ item: { id, cover, name, rating, time, desc, starring, genres, tags, video } }) => {
   return (
@@ -23,9 +22,9 @@ export const Homecard = ({ item: { id, cover, name, rating, time, desc, starring
         <label>{rating} / 5</label>
         <label>Time: {time}</label>
         </div>
-        <p className='p'>{desc}
+        <p className='p'>{desc}</p>
         <div className="playButton">
-          <Link to={'/SinglePage/${id}'}>
+          <Link to={`/singlepage/${id}`}>
             <button>
               <div className="img">
               <img src="./images/play-button.png" alt="" />
@@ -35,7 +34,6 @@ export const Homecard = ({ item: { id, cover, name, rating, time, desc, starring
             </button>
           </Link>
         </div>
-        </p>
         <div className='cast'>
           <h4> 
             <span>Starring: </span>

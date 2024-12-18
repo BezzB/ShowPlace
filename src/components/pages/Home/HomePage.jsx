@@ -5,21 +5,17 @@ import { latest, recommended, upcome } from '../../../dummyData'
 import { Trending } from './Latest/Trending'
 
 export const HomePage = () => {
-  const [items, setitems] = useState(upcome);
-  const [item, setitem] = useState(latest);
-  const [rec, setrec] = useState(recommended);
+  const [upcomingMovies] = useState(upcome);
+  const [latestMovies] = useState(latest);
+  const [recommendedMovies] = useState(recommended);
   
   return (
     <>
-      
       <Homes />
-      <Upcoming items ={items} title='Upcomming Movies '/>
-       <Upcoming items ={item} title='Latest Movies  '/>  
+      <Upcoming items={upcomingMovies} title="Upcoming Movies" />
+      <Upcoming items={latestMovies} title="Latest Movies" />
       <Trending /> 
-      <Upcoming items = {rec} title='Recomended Movies '/>
-
+      <Upcoming items={recommendedMovies} title="Recommended Movies" />
     </>
   )
 }
-
-

@@ -11,10 +11,8 @@ const App = () => {
   return (
     <><Navbar />
       <Routes>
-        <Route>
-          <Route exact path = "/" element ={<HomePage/> }/>
-          <Route path='/singlepage/:id' component={SinglePage} exact />         
-        </Route>
+        <Route exact path = "/" element={<HomePage/>} />
+        <Route path='/singlepage/:id' element={<SinglePage/>} />
       </Routes>
       <Footer />
    </>
