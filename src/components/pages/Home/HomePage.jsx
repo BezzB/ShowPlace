@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { homeData } from '../../../dummyData'
 import Home from './Home'
+import Upcoming from './Upcoming/Upcoming'
 import './HomePage.scss'
 
 export const HomePage = () => {
@@ -56,6 +57,8 @@ export const HomePage = () => {
           <Home items={items.slice(0, 10)} />
         </div>
       </section>
+
+      <Upcoming />
 
       <section className="popular-section">
         <div className="container">

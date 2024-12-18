@@ -7,6 +7,15 @@ export const SinglePage = () => {
   const { id } = useParams()
   const [item] = homeData.filter((item) => item.id === parseInt(id))
 
+  const renderTags = (tags) => {
+    if (!tags) return '';
+    if (Array.isArray(tags)) return tags.join(', ');
+    if (typeof tags === 'string') {
+      return tags.split(',').map(tag => tag.trim()).join(', ');
+    }
+    return '';
+  };
+
   return (
     <div className='single-page'>
       <div className='page-header'>
@@ -36,7 +45,7 @@ export const SinglePage = () => {
             </div>
             <div className='info-item'>
               <h4>Tags</h4>
-              <p>{item.tags.join(', ')}</p>
+              <p>{renderTags(item.tags)}</p>
             </div>
           </div>
         </div>

@@ -1,0 +1,69 @@
+.MovieBox {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: #3498db;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+
+    .img img {
+      transform: scale(1.1);
+    }
+  }
+
+  .img {
+    position: relative;
+    overflow: hidden;
+    height: 300px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  .text {
+    padding: 1.5rem;
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    span {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .btn-play {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      background: #3498db;
+      color: white;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+      }
+
+      i {
+        font-size: 1.1rem;
+      }
+    }
+  }
+} 
