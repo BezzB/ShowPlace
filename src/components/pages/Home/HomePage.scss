@@ -1,14 +1,18 @@
 .home-page {
   min-height: calc(100vh - 80px);
   background-color: #141414;
-  margin-top: 80px;
+  padding-top: 0;
 
   // Hero Section
   .hero-section {
-    height: calc(90vh - 80px);
+    height: 90vh;
     position: relative;
     background-color: #000;
     margin-bottom: 3rem;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-top: 0;
 
     .overlay {
       position: absolute;
@@ -18,13 +22,13 @@
       bottom: 0;
       background: linear-gradient(
         to right,
-        rgba(0, 0, 0, 0.9) 0%,
-        rgba(0, 0, 0, 0.7) 50%,
-        rgba(0, 0, 0, 0.4) 100%
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(0, 0, 0, 0.8) 50%,
+        rgba(0, 0, 0, 0.6) 100%
       );
       display: flex;
       align-items: center;
-      padding: 0 5%;
+      padding: 80px 5% 0;
     }
 
     .hero-content {
@@ -32,18 +36,20 @@
       color: #fff;
       animation: fadeInUp 1s ease-out;
       padding-bottom: 5rem;
+      margin-top: 2rem;
 
       h1 {
         font-size: 4rem;
         font-weight: 700;
         margin-bottom: 1.5rem;
         line-height: 1.2;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
       }
 
       .meta {
         display: flex;
-        gap: 2rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
         margin-bottom: 2rem;
         font-size: 1.1rem;
 
@@ -51,6 +57,10 @@
           display: flex;
           align-items: center;
           gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          backdrop-filter: blur(5px);
 
           i {
             color: #3498db;
@@ -64,6 +74,7 @@
         margin-bottom: 2.5rem;
         opacity: 0.9;
         max-width: 600px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
       }
 
       .actions {
@@ -78,14 +89,19 @@
           align-items: center;
           gap: 0.5rem;
           transition: all 0.3s ease;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 600;
 
           &-primary {
             background: #3498db;
             border: none;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 
             &:hover {
               background: #2980b9;
               transform: translateY(-2px);
+              box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
             }
           }
 
@@ -106,14 +122,30 @@
 
   // Content Sections
   section {
-    padding: 3rem 0;
+    padding: 4rem 0;
     position: relative;
 
     .section-title {
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: #fff;
-      margin-bottom: 2rem;
-      font-weight: 600;
+      margin-bottom: 2.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      padding-left: 1rem;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 70%;
+        background: #3498db;
+        border-radius: 2px;
+      }
     }
 
     .container {
@@ -141,16 +173,19 @@
         text-align: center;
         transition: all 0.3s ease;
         cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.1);
 
         &:hover {
           background: rgba(255, 255, 255, 0.1);
           transform: translateY(-5px);
+          border-color: #3498db;
         }
 
         h3 {
           color: #fff;
           font-size: 1.5rem;
           margin-bottom: 0.5rem;
+          font-weight: 600;
         }
 
         span {
@@ -166,10 +201,14 @@
 @media (max-width: 768px) {
   .home-page {
     .hero-section {
-      height: 80vh;
+      height: 100vh;
+
+      .overlay {
+        padding-top: 60px;
+      }
 
       .hero-content {
-        padding-bottom: 3rem;
+        margin-top: 1rem;
 
         h1 {
           font-size: 2.5rem;
