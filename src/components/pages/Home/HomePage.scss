@@ -1,10 +1,11 @@
 .home-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
   background-color: #141414;
+  margin-top: 80px;
 
   // Hero Section
   .hero-section {
-    height: 90vh;
+    height: calc(90vh - 80px);
     position: relative;
     background-color: #000;
     margin-bottom: 3rem;

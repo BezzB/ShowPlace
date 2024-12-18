@@ -31,17 +31,20 @@ body {
   flex: 1;
   position: relative;
   z-index: 1;
+  padding-top: 80px;
+  min-height: calc(100vh - 80px);
 }
 
 // Navbar styles
 .navbar {
-  background-color: transparent;
+  background-color: rgba(20, 20, 20, 0.95) !important;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 1rem 2rem;
+  height: 80px;
+  padding: 0.5rem 2rem !important;
   transition: background-color 0.3s ease;
 
   &.scrolled {
