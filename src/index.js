@@ -5,6 +5,11 @@ import App from './App';
 import {BrowserRouter} from 'react-router-dom'
 
 import reportWebVitals from './reportWebVitals';
+import { Buffer } from 'buffer';
+import process from 'process';
+
+window.process = process;
+window.Buffer = Buffer;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

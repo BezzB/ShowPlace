@@ -4,6 +4,9 @@ import { tmdbService } from '../services/tmdb.service';
 export const useMovies = () => {
   const [trending, setTrending] = useState([]);
   const [popular, setPopular] = useState([]);
+  const [topRated, setTopRated] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,13 +14,25 @@ export const useMovies = () => {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        const [trendingData, popularData] = await Promise.all([
+        const [
+          trendingData, 
+          popularData, 
+          topRatedData,
+          upcomingData,
+          genresData
+        ] = await Promise.all([
           tmdbService.getTrending(),
-          tmdbService.getPopular()
+          tmdbService.getPopular(),
+          tmdbService.getTopRated(),
+          tmdbService.getUpcoming(),
+          tmdbService.getGenres()
         ]);
         
         setTrending(trendingData);
         setPopular(popularData.results);
+        setTopRated(topRatedData.results);
+        setUpcoming(upcomingData.results);
+        setGenres(genresData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -28,5 +43,13 @@ export const useMovies = () => {
     fetchMovies();
   }, []);
 
-  return { trending, popular, loading, error };
+  return { 
+    trending, 
+    popular, 
+    topRated,
+    upcoming,
+    genres,
+    loading, 
+    error 
+  };
 }; 
