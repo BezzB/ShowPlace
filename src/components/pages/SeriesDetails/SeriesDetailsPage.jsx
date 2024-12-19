@@ -83,26 +83,44 @@ export const SeriesDetailsPage = () => {
         </div>
 
         <div className="seasons-section">
-          <div className="seasons-navigation">
+          <div className="seasons-tabs">
             {series.seasons
               .filter(season => season.episode_count > 0)
               .map(season => (
                 <button
                   key={season.id}
-                  className={`season-button ${selectedSeason === season.season_number ? 'active' : ''}`}
+                  className={`season-tab ${selectedSeason === season.season_number ? 'active' : ''}`}
                   onClick={() => setSelectedSeason(season.season_number)}
                 >
-                  <span className="season-number">Season {season.season_number}</span>
-                  <span className="episode-count">{season.episode_count} Episodes</span>
+                  <div className="tab-content">
+                    <span className="season-number">Season {season.season_number}</span>
+                    <span className="episode-count">{season.episode_count} Episodes</span>
+                    <span className="air-date">
+                      {new Date(season.air_date).getFullYear()}
+                    </span>
+                  </div>
+                  {selectedSeason === season.season_number && (
+                    <div className="active-indicator">
+                      <i className="fas fa-play"></i>
+                    </div>
+                  )}
                 </button>
               ))}
           </div>
 
           {currentSeason && (
-            <div className="season-details">
-              <div className="season-info">
-                <h2>Season {currentSeason.season_number}</h2>
-                <p>{currentSeason.overview || `Season ${currentSeason.season_number} of ${series.name}`}</p>
+            <div className="season-content">
+              <div className="season-header">
+                <div className="season-info">
+                  <h2>Season {currentSeason.season_number}</h2>
+                  <div className="season-meta">
+                    <span>{currentSeason.episode_count} Episodes</span>
+                    <span>{new Date(currentSeason.air_date).getFullYear()}</span>
+                  </div>
+                  <p className="season-overview">
+                    {currentSeason.overview || `Season ${currentSeason.season_number} of ${series.name}`}
+                  </p>
+                </div>
               </div>
 
               <div className="episodes-grid">
