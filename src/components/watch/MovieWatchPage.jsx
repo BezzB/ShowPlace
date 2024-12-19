@@ -2,21 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { tmdbService } from '../../services/tmdb.service';
 import { getImageUrl } from '../../config/tmdb.config';
+import { streamingService } from '../../services/streamingService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import './WatchPage.scss';
 
-export const WatchPage = () => {
+export const MovieWatchPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
+  const [streamUrl, setStreamUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
+    const fetchMovie = async () => {
       try {
         setLoading(true);
-        const movieData = await tmdbService.getMovieDetails(id);
-        setMovie(movieData);
+        const data = await tmdbService.getMovieDetails(id);
+        setMovie(data);
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -24,13 +26,20 @@ export const WatchPage = () => {
       }
     };
 
-    fetchMovieDetails();
+    fetchMovie();
+  }, [id]);
+
+  useEffect(() => {
+    const getStreamUrl = async () => {
+      const url = await streamingService.getBestSource('movie', id);
+      setStreamUrl(url);
+    };
+
+    getStreamUrl();
   }, [id]);
 
   if (loading) return <LoadingSpinner />;
   if (!movie) return <div className="error-message">Movie not found</div>;
-
-  const streamUrl = `https://vidsrc.xyz/embed/movie/${id}`;
 
   return (
     <div className="watch-page">
@@ -49,11 +58,7 @@ export const WatchPage = () => {
 
       <div className="info-section">
         <div className="movie-info">
-          <img 
-            src={getImageUrl(movie.poster_path)} 
-            alt={movie.title} 
-            className="poster"
-          />
+          <img src={getImageUrl(movie.poster_path)} alt={movie.title} className="poster" />
           <div className="details">
             <h1>{movie.title}</h1>
             <div className="meta">
@@ -64,10 +69,7 @@ export const WatchPage = () => {
             <p className="overview">{movie.overview}</p>
           </div>
         </div>
-        <button 
-          className="back-button"
-          onClick={() => navigate(-1)}
-        >
+        <button className="back-button" onClick={() => navigate(-1)}>
           <i className="fas fa-arrow-left"></i> Back
         </button>
       </div>

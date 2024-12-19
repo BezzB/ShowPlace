@@ -195,5 +195,86 @@ export const tmdbService = {
       console.error('Error fetching genre background:', error);
       return '/default-genre-background.jpg';
     }
+  },
+
+  // Get popular TV shows
+  getPopularTVShows: async (page = 1) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/tv/popular?api_key=${API_KEY}&page=${page}`
+      );
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.error('Error fetching popular TV shows:', error);
+      throw error;
+    }
+  },
+
+  // Get TV show details with episodes
+  getTVShowDetails: async (id) => {
+    try {
+      // Get main show details
+      const showResponse = await fetch(
+        `${BASE_URL}/tv/${id}?api_key=${API_KEY}&append_to_response=credits,similar,videos`
+      );
+      const showData = await showResponse.json();
+
+      // Get season details with episodes
+      const seasonPromises = showData.seasons.map(season =>
+        fetch(`${BASE_URL}/tv/${id}/season/${season.season_number}?api_key=${API_KEY}`)
+          .then(res => res.json())
+      );
+      const seasonData = await Promise.all(seasonPromises);
+
+      // Combine show data with season details
+      return {
+        ...showData,
+        seasons: seasonData
+      };
+    } catch (error) {
+      console.error('Error fetching TV show details:', error);
+      throw error;
+    }
+  },
+
+  // Get popular TV shows by genre
+  getTVShowsByGenre: async (genreId, page = 1) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=${genreId}&page=${page}&sort_by=popularity.desc`
+      );
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching TV shows by genre:', error);
+      throw error;
+    }
+  },
+
+  // Get TV show recommendations
+  getTVShowRecommendations: async (id) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/tv/${id}/recommendations?api_key=${API_KEY}`
+      );
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.error('Error fetching TV show recommendations:', error);
+      throw error;
+    }
+  },
+
+  // Search TV shows
+  searchTVShows: async (query, page = 1) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=${page}`
+      );
+      return await response.json();
+    } catch (error) {
+      console.error('Error searching TV shows:', error);
+      throw error;
+    }
   }
 }; 
