@@ -28,23 +28,37 @@
       }
     }
 
-    .view-all {
-      color: #3498db;
-      font-weight: 500;
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      transition: all 0.3s ease;
+      gap: 1rem;
 
-      &:hover {
-        color: #2980b9;
-        i {
-          transform: translateX(5px);
+      .view-all {
+        background: none;
+        border: none;
+        color: #3498db;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+
+        &:hover {
+          color: #2980b9;
+          background: rgba(52, 152, 219, 0.1);
+
+          i {
+            transform: translateX(5px);
+          }
         }
-      }
 
-      i {
-        transition: transform 0.3s ease;
+        i {
+          font-size: 0.8rem;
+          transition: transform 0.3s ease;
+        }
       }
     }
   }
@@ -53,6 +67,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 2rem;
+    transition: all 0.3s ease;
 
     .movie-card {
       background: rgba(255, 255, 255, 0.05);

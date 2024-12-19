@@ -12,14 +12,10 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    margin-top: 0;
 
     .overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: linear-gradient(
         to right,
         rgba(0, 0, 0, 0.95) 0%,
@@ -28,7 +24,7 @@
       );
       display: flex;
       align-items: center;
-      padding: 80px 5% 0;
+      padding: 0 5%;
     }
 
     .hero-content {
@@ -36,7 +32,6 @@
       color: #fff;
       animation: fadeInUp 1s ease-out;
       padding-bottom: 5rem;
-      margin-top: 2rem;
 
       h1 {
         font-size: 4rem;
@@ -64,6 +59,10 @@
 
           i {
             color: #3498db;
+            
+            &.fa-star {
+              color: #f1c40f;
+            }
           }
         }
       }
@@ -340,5 +339,16 @@
         }
       }
     }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
