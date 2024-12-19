@@ -4,9 +4,10 @@
   left: 0;
   right: 0;
   z-index: 999;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
   padding: 1rem 2rem;
-  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
   .nav-content {
     max-width: 1400px;
@@ -19,7 +20,7 @@
     .left-section {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.5rem;
 
       .back-button {
         background: rgba(255, 255, 255, 0.1);
@@ -30,8 +31,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
         color: white;
+        cursor: pointer;
         transition: all 0.2s ease;
 
         &:hover {
@@ -44,11 +45,19 @@
         }
       }
 
-      h1 {
-        color: white;
-        font-size: 1.5rem;
-        font-weight: 500;
-        margin: 0;
+      .title-info {
+        h1 {
+          color: white;
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin: 0;
+          margin-bottom: 0.2rem;
+        }
+
+        .episode-label {
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 0.9rem;
+        }
       }
     }
 
@@ -61,7 +70,7 @@
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
         color: white;
-        padding: 0.5rem 2.5rem 0.5rem 1rem;
+        padding: 0.6rem 2.5rem 0.6rem 1rem;
         border-radius: 4px;
         font-size: 0.9rem;
         cursor: pointer;
@@ -71,15 +80,23 @@
         background-repeat: no-repeat;
         background-position: right 0.7rem center;
         background-size: 1.2rem;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 255, 255, 0.3);
+        }
 
         &:focus {
           outline: none;
           border-color: #3498db;
+          box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
         }
 
         option {
           background: #1a1a1a;
           color: white;
+          padding: 0.5rem;
         }
       }
 
@@ -88,10 +105,8 @@
       }
     }
   }
-}
 
-@media (max-width: 768px) {
-  .watch-navbar {
+  @media (max-width: 1024px) {
     padding: 1rem;
 
     .nav-content {
@@ -100,14 +115,37 @@
 
       .controls-section {
         width: 100%;
-        flex-direction: column;
+        justify-content: space-between;
 
         select {
-          width: 100%;
+          flex: 1;
         }
 
         .episode-select select {
           min-width: unset;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-content {
+      .left-section {
+        width: 100%;
+        
+        .title-info {
+          h1 {
+            font-size: 1.2rem;
+          }
+        }
+      }
+
+      .controls-section {
+        flex-direction: column;
+        gap: 0.8rem;
+
+        select {
+          width: 100%;
         }
       }
     }

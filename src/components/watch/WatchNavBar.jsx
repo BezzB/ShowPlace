@@ -9,6 +9,7 @@ export const WatchNavBar = ({
   selectedEpisode, 
   onSeasonChange, 
   onEpisodeChange,
+  currentEpisode,
   isSeries = false 
 }) => {
   const navigate = useNavigate();
@@ -20,7 +21,14 @@ export const WatchNavBar = ({
           <button className="back-button" onClick={() => navigate(-1)}>
             <i className="fas fa-arrow-left"></i>
           </button>
-          <h1>{title}</h1>
+          <div className="title-info">
+            <h1>{title}</h1>
+            {isSeries && currentEpisode && (
+              <span className="episode-label">
+                S{selectedSeason} E{selectedEpisode} - {currentEpisode.name}
+              </span>
+            )}
+          </div>
         </div>
 
         {isSeries && (

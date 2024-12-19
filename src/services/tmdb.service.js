@@ -214,50 +214,12 @@ export const tmdbService = {
   // Get TV show details with episodes
   getTVShowDetails: async (id) => {
     try {
-      // Get main show details
-      const showResponse = await fetch(
-        `${BASE_URL}/tv/${id}?api_key=${API_KEY}&append_to_response=credits,similar,videos`
+      const response = await fetch(
+        `${BASE_URL}/tv/${id}?api_key=${API_KEY}&append_to_response=credits,similar,videos,seasons`
       );
-      const showData = await showResponse.json();
-
-      // Get details for each season
-      const seasonPromises = showData.seasons.map(async (season) => {
-        try {
-          const seasonResponse = await fetch(
-            `${BASE_URL}/tv/${id}/season/${season.season_number}?api_key=${API_KEY}`
-          );
-          const seasonData = await seasonResponse.json();
-
-          // Get details for each episode
-          const episodePromises = seasonData.episodes.map(async (episode) => {
-            try {
-              const episodeResponse = await fetch(
-                `${BASE_URL}/tv/${id}/season/${season.season_number}/episode/${episode.episode_number}?api_key=${API_KEY}`
-              );
-              return await episodeResponse.json();
-            } catch (error) {
-              console.error(`Error fetching episode ${episode.episode_number} details:`, error);
-              return episode; // Return basic episode data if detailed fetch fails
-            }
-          });
-
-          const episodes = await Promise.all(episodePromises);
-          return {
-            ...seasonData,
-            episodes: episodes
-          };
-        } catch (error) {
-          console.error(`Error fetching season ${season.season_number} details:`, error);
-          return season; // Return basic season data if detailed fetch fails
-        }
-      });
-
-      const seasons = await Promise.all(seasonPromises);
-
-      return {
-        ...showData,
-        seasons: seasons
-      };
+      const data = await response.json();
+      console.log('API Response:', data); // Debug log
+      return data;
     } catch (error) {
       console.error('Error fetching TV show details:', error);
       throw error;
@@ -343,5 +305,19 @@ export const tmdbService = {
       console.error('Error fetching all TV shows:', error);
       throw error;
     }
-  }
+  },
+
+  // Add this method to your tmdbService
+  getSeasonDetails: async (seriesId, seasonNumber) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/tv/${seriesId}/season/${seasonNumber}?api_key=${API_KEY}&append_to_response=credits,videos`
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching season details:', error);
+      throw error;
+    }
+  },
 }; 

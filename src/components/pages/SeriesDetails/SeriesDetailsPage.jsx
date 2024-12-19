@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { tmdbService } from '../../../services/tmdb.service';
 import { getImageUrl } from '../../../config/tmdb.config';
 import LoadingSpinner from '../../common/LoadingSpinner';
@@ -9,16 +9,21 @@ export const SeriesDetailsPage = () => {
   const { id } = useParams();
   const [series, setSeries] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(1);
+  const [currentSeason, setCurrentSeason] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [seasonLoading, setSeasonLoading] = useState(false);
 
   useEffect(() => {
     const fetchSeriesDetails = async () => {
       try {
         setLoading(true);
         const data = await tmdbService.getTVShowDetails(id);
+        console.log('Series Data:', data);
+        console.log('Seasons:', data.seasons);
         setSeries(data);
         if (data.seasons?.length > 0) {
           const firstValidSeason = data.seasons.find(s => s.episode_count > 0);
+          console.log('First Valid Season:', firstValidSeason);
           if (firstValidSeason) {
             setSelectedSeason(firstValidSeason.season_number);
           }
@@ -33,10 +38,26 @@ export const SeriesDetailsPage = () => {
     fetchSeriesDetails();
   }, [id]);
 
+  useEffect(() => {
+    const fetchSeasonDetails = async () => {
+      if (!series || !selectedSeason) return;
+
+      try {
+        setSeasonLoading(true);
+        const seasonData = await tmdbService.getSeasonDetails(id, selectedSeason);
+        setCurrentSeason(seasonData);
+      } catch (error) {
+        console.error('Error fetching season details:', error);
+      } finally {
+        setSeasonLoading(false);
+      }
+    };
+
+    fetchSeasonDetails();
+  }, [id, selectedSeason, series]);
+
   if (loading) return <LoadingSpinner />;
   if (!series) return <div className="error-message">Series not found</div>;
-
-  const currentSeason = series.seasons.find(s => s.season_number === selectedSeason);
 
   return (
     <div className="series-details-page">
@@ -84,8 +105,8 @@ export const SeriesDetailsPage = () => {
 
         <div className="seasons-section">
           <div className="seasons-tabs">
-            {series.seasons
-              .filter(season => season.episode_count > 0)
+            {series?.seasons
+              ?.filter(season => season.season_number > 0)
               .map(season => (
                 <button
                   key={season.id}
@@ -96,7 +117,7 @@ export const SeriesDetailsPage = () => {
                     <span className="season-number">Season {season.season_number}</span>
                     <span className="episode-count">{season.episode_count} Episodes</span>
                     <span className="air-date">
-                      {new Date(season.air_date).getFullYear()}
+                      {season.air_date ? new Date(season.air_date).getFullYear() : 'TBA'}
                     </span>
                   </div>
                   {selectedSeason === season.season_number && (
@@ -108,13 +129,17 @@ export const SeriesDetailsPage = () => {
               ))}
           </div>
 
-          {currentSeason && (
+          {seasonLoading ? (
+            <div className="season-loading">
+              <LoadingSpinner />
+            </div>
+          ) : currentSeason && (
             <div className="season-content">
               <div className="season-header">
                 <div className="season-info">
                   <h2>Season {currentSeason.season_number}</h2>
                   <div className="season-meta">
-                    <span>{currentSeason.episode_count} Episodes</span>
+                    <span>{currentSeason.episodes?.length} Episodes</span>
                     <span>{new Date(currentSeason.air_date).getFullYear()}</span>
                   </div>
                   <p className="season-overview">
@@ -134,6 +159,13 @@ export const SeriesDetailsPage = () => {
                           <i className="fas fa-film"></i>
                         </div>
                       )}
+                      <Link 
+                        to={`/watch/tv/${series.id}?season=${currentSeason.season_number}&episode=${episode.episode_number}`} 
+                        className="play-button"
+                      >
+                        <i className="fas fa-play"></i>
+                        <span>Play Episode</span>
+                      </Link>
                     </div>
                     <div className="episode-info">
                       <div className="episode-header">
@@ -141,7 +173,9 @@ export const SeriesDetailsPage = () => {
                         <span className="runtime">{episode.runtime} min</span>
                       </div>
                       <h3>{episode.name}</h3>
-                      <p className="air-date">Aired: {new Date(episode.air_date).toLocaleDateString()}</p>
+                      <p className="air-date">
+                        Aired: {new Date(episode.air_date).toLocaleDateString()}
+                      </p>
                       <p className="overview">{episode.overview}</p>
                     </div>
                   </div>
