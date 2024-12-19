@@ -119,21 +119,31 @@ export const SeriesWatchPage = () => {
         </div>
       </div>
 
-      <div className="tv-info-section">
-        <div className="show-info">
-          <img src={getImageUrl(series.poster_path)} alt={series.name} className="poster" />
-          <div className="details">
-            <h1>{series.name}</h1>
-            <div className="meta">
-              <span>{new Date(series.first_air_date).getFullYear()}</span>
-              <span>{series.number_of_seasons} Seasons</span>
-              <span>{series.vote_average.toFixed(1)} ⭐</span>
-            </div>
-            <p className="overview">{series.overview}</p>
+      <div className="content-section">
+        <div className="current-episode-info">
+          <h2>Now Playing</h2>
+          <div className="episode-details">
+            <span className="episode-number">S{selectedSeason} E{selectedEpisode}</span>
+            <h3>{currentEpisode?.name}</h3>
+            <p>{currentEpisode?.overview}</p>
           </div>
         </div>
 
-        <div className="episodes-section">
+        <div className="episodes-container">
+          <div className="season-tabs">
+            {series?.seasons
+              .filter(season => season.episode_count > 0)
+              .map(season => (
+                <button
+                  key={season.id}
+                  className={`season-tab ${selectedSeason === season.season_number ? 'active' : ''}`}
+                  onClick={() => handleSeasonChange(season.season_number)}
+                >
+                  Season {season.season_number}
+                </button>
+              ))}
+          </div>
+
           <div className="episodes-grid">
             {currentSeason?.episodes?.map(episode => (
               <div 
@@ -159,6 +169,7 @@ export const SeriesWatchPage = () => {
                     <span className="episode-runtime">{episode.runtime} min</span>
                   </div>
                   <h3>{episode.name}</h3>
+                  <p className="episode-overview">{episode.overview}</p>
                 </div>
               </div>
             ))}
