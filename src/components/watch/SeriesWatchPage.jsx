@@ -4,8 +4,8 @@ import { tvServices } from '../../services/tvServices';
 import { streamingService } from '../../services/streamingService';
 import { getImageUrl } from '../../config/tmdb.config';
 import LoadingSpinner from '../common/LoadingSpinner';
-import './WatchPage.scss';
 import { WatchNavBar } from './WatchNavBar';
+import './WatchPage.scss';
 
 export const SeriesWatchPage = () => {
   const { id } = useParams();
@@ -24,6 +24,7 @@ export const SeriesWatchPage = () => {
   const [showControls, setShowControls] = useState(false);
   const [autoplay, setAutoplay] = useState(true);
 
+  // Fetch series details
   useEffect(() => {
     const fetchSeries = async () => {
       try {
@@ -40,32 +41,37 @@ export const SeriesWatchPage = () => {
     fetchSeries();
   }, [id]);
 
+  // Update current and next episode when season or episode changes
   useEffect(() => {
-    if (series && selectedSeason && selectedEpisode) {
+    if (series && selectedSeason) {
       const season = series.seasons.find(s => s.season_number === selectedSeason);
       if (season?.episodes) {
         const episode = season.episodes.find(e => e.episode_number === selectedEpisode);
-        setCurrentEpisode(episode);
+        if (episode) {
+          setCurrentEpisode(episode);
 
-        // Set next episode
-        const nextEp = season.episodes.find(e => e.episode_number === selectedEpisode + 1);
-        if (nextEp) {
-          setNextEpisode(nextEp);
-        } else {
-          const nextSeason = series.seasons.find(s => s.season_number === selectedSeason + 1);
-          if (nextSeason?.episodes?.length > 0) {
-            setNextEpisode({
-              ...nextSeason.episodes[0],
-              season_number: nextSeason.season_number
-            });
+          // Find next episode
+          const nextEp = season.episodes.find(e => e.episode_number === selectedEpisode + 1);
+          if (nextEp) {
+            setNextEpisode(nextEp);
           } else {
-            setNextEpisode(null);
+            // Look for first episode of next season
+            const nextSeason = series.seasons.find(s => s.season_number === selectedSeason + 1);
+            if (nextSeason?.episodes?.length > 0) {
+              setNextEpisode({
+                ...nextSeason.episodes[0],
+                season_number: nextSeason.season_number
+              });
+            } else {
+              setNextEpisode(null);
+            }
           }
         }
       }
     }
   }, [series, selectedSeason, selectedEpisode]);
 
+  // Update stream URL when episode changes
   useEffect(() => {
     const getStreamUrl = async () => {
       if (currentEpisode) {
@@ -77,6 +83,18 @@ export const SeriesWatchPage = () => {
     getStreamUrl();
   }, [id, selectedSeason, selectedEpisode, currentEpisode]);
 
+  // Handle season change
+  const handleSeasonChange = useCallback((newSeason) => {
+    setSelectedSeason(newSeason);
+    setSelectedEpisode(1); // Reset to first episode of new season
+  }, []);
+
+  // Handle episode change
+  const handleEpisodeChange = useCallback((newEpisode) => {
+    setSelectedEpisode(newEpisode);
+  }, []);
+
+  // Handle next episode
   const handleNextEpisode = useCallback(() => {
     if (nextEpisode) {
       if (nextEpisode.season_number !== selectedSeason) {
@@ -86,28 +104,37 @@ export const SeriesWatchPage = () => {
     }
   }, [nextEpisode, selectedSeason]);
 
+  // Handle video end (autoplay)
   const handleVideoEnd = useCallback(() => {
     if (autoplay && nextEpisode) {
       handleNextEpisode();
     }
   }, [autoplay, nextEpisode, handleNextEpisode]);
 
-  const handleSeasonChange = (newSeason) => {
-    setSelectedSeason(newSeason);
-  };
+  // Handle mouse movement for controls
+  const handleMouseMove = useCallback(() => {
+    setShowControls(true);
+    // Hide controls after 3 seconds of inactivity
+    const timer = setTimeout(() => setShowControls(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (loading) return <LoadingSpinner />;
   if (!series) return <div className="error-message">Series not found</div>;
 
   return (
-    <div className="watch-page series-watch">
+    <div 
+      className="watch-page series-watch"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setShowControls(false)}
+    >
       <WatchNavBar 
-        title={series?.name}
-        seasons={series?.seasons || []}
+        title={series.name}
+        seasons={series.seasons}
         selectedSeason={selectedSeason}
         selectedEpisode={selectedEpisode}
         onSeasonChange={handleSeasonChange}
-        onEpisodeChange={setSelectedEpisode}
+        onEpisodeChange={handleEpisodeChange}
         currentEpisode={currentEpisode}
         isSeries={true}
       />
@@ -120,7 +147,7 @@ export const SeriesWatchPage = () => {
             height="100%"
             frameBorder="0"
             allowFullScreen
-            title={`${series?.name} S${selectedSeason}E${selectedEpisode}`}
+            title={`${series.name} S${selectedSeason}E${selectedEpisode}`}
             onEnded={handleVideoEnd}
           />
 
@@ -143,15 +170,17 @@ export const SeriesWatchPage = () => {
                   <button 
                     className="autoplay-toggle"
                     onClick={() => setAutoplay(!autoplay)}
+                    title={autoplay ? "Disable Autoplay" : "Enable Autoplay"}
                   >
                     <i className={`fas fa-${autoplay ? 'check-circle' : 'circle'}`}></i>
-                    Autoplay
+                    <span>Autoplay</span>
                   </button>
 
                   {nextEpisode && (
                     <button 
                       className="next-episode"
                       onClick={handleNextEpisode}
+                      title="Play Next Episode"
                     >
                       <span>Next Episode</span>
                       <i className="fas fa-forward"></i>
