@@ -1,0 +1,396 @@
+.series-details-page {
+  min-height: 100vh;
+  background: #141414;
+  position: relative;
+  padding-top: 60px;
+
+  .backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 600px;
+    z-index: 1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(20, 20, 20, 0.5) 0%,
+        rgba(20, 20, 20, 0.8) 60%,
+        #141414 100%
+      );
+    }
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: white;
+
+    .series-header {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+
+      .poster {
+        img {
+          width: 100%;
+          border-radius: 12px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      .info {
+        h1 {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+          font-weight: 600;
+        }
+
+        .meta {
+          display: flex;
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 1.1rem;
+
+          .rating {
+            i {
+              color: #ffd700;
+              margin-right: 0.5rem;
+            }
+          }
+        }
+
+        .genres {
+          display: flex;
+          gap: 0.8rem;
+          margin-bottom: 1.5rem;
+          flex-wrap: wrap;
+
+          .genre {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+          }
+        }
+
+        .overview {
+          font-size: 1.1rem;
+          line-height: 1.8;
+          color: rgba(255, 255, 255, 0.9);
+          margin-bottom: 2rem;
+        }
+
+        .additional-info {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1.5rem;
+
+          .info-item {
+            .label {
+              display: block;
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 0.9rem;
+              margin-bottom: 0.5rem;
+            }
+
+            .value {
+              font-size: 1.1rem;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+    .seasons-section {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+
+      .seasons-navigation {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+
+        &::-webkit-scrollbar {
+          height: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 4px;
+        }
+
+        .season-button {
+          background: rgba(255, 255, 255, 0.1);
+          border: none;
+          padding: 1rem 1.5rem;
+          border-radius: 8px;
+          color: white;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-width: 180px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+
+          .season-number {
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
+
+          .episode-count {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+          }
+
+          &:hover {
+            background: rgba(52, 152, 219, 0.3);
+          }
+
+          &.active {
+            background: #3498db;
+
+            .episode-count {
+              color: rgba(255, 255, 255, 0.9);
+            }
+          }
+        }
+      }
+
+      .season-details {
+        .season-info {
+          margin-bottom: 2rem;
+
+          h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+          }
+
+          p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.6;
+          }
+        }
+
+        .episodes-grid {
+          display: grid;
+          gap: 1.5rem;
+
+          .episode-card {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+
+            &:hover {
+              transform: translateY(-4px);
+            }
+
+            .episode-thumbnail {
+              position: relative;
+              height: 100%;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+
+              .no-image {
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.05);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                i {
+                  font-size: 2rem;
+                  color: rgba(255, 255, 255, 0.3);
+                }
+              }
+            }
+
+            .episode-info {
+              padding: 1.5rem;
+
+              .episode-header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+
+                .episode-number {
+                  background: rgba(52, 152, 219, 0.2);
+                  padding: 0.5rem 1rem;
+                  border-radius: 4px;
+                  color: #3498db;
+                }
+
+                .runtime {
+                  color: rgba(255, 255, 255, 0.6);
+                }
+              }
+
+              h3 {
+                font-size: 1.3rem;
+                margin-bottom: 0.8rem;
+              }
+
+              .air-date {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+              }
+
+              .overview {
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.6;
+                font-size: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .cast-section {
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .cast-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+
+        .cast-card {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          overflow: hidden;
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: translateY(-4px);
+          }
+
+          img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+          }
+
+          .no-image {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+              font-size: 2rem;
+              color: rgba(255, 255, 255, 0.3);
+            }
+          }
+
+          .actor-info {
+            padding: 1rem;
+
+            h4 {
+              font-size: 1.1rem;
+              margin-bottom: 0.5rem;
+            }
+
+            p {
+              font-size: 0.9rem;
+              color: rgba(255, 255, 255, 0.6);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .content {
+      .series-header {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+
+        .poster {
+          max-width: 300px;
+          margin: 0 auto;
+        }
+
+        .info {
+          text-align: center;
+
+          .meta,
+          .genres {
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      padding: 1rem;
+
+      .series-header {
+        .info {
+          h1 {
+            font-size: 2rem;
+          }
+        }
+      }
+
+      .seasons-section {
+        padding: 1rem;
+
+        .season-details {
+          .episodes-grid {
+            .episode-card {
+              grid-template-columns: 1fr;
+
+              .episode-thumbnail {
+                aspect-ratio: 16/9;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 

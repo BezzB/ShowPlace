@@ -13,6 +13,7 @@ import { ProfilePage } from "../components/pages/Profile/ProfilePage";
 import { SettingsPage } from "../components/pages/Settings/SettingsPage";
 import { MovieWatchPage } from "../components/watch/MovieWatchPage";
 import { SeriesWatchPage } from "../components/watch/SeriesWatchPage";
+import { SeriesDetailsPage } from "../components/pages/SeriesDetails/SeriesDetailsPage";
 
 export const routes = [
   {
@@ -39,7 +40,7 @@ export const routes = [
   },
   {
     path: "/tv/:id",
-    element: SinglePage,
+    element: SeriesDetailsPage,
   },
   {
     path: "/watch/tv/:id",

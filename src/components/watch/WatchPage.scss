@@ -10,9 +10,51 @@
     margin-top: -60px;
 
     .video-container {
+      position: relative;
       width: 100%;
       aspect-ratio: 16/9;
-      max-height: calc(100vh - 60px);
+      background: #000;
+
+      .loading-overlay,
+      .stream-error {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        gap: 1rem;
+
+        p {
+          font-size: 1.1rem;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        button {
+          padding: 0.8rem 2rem;
+          background: #3498db;
+          border: none;
+          border-radius: 4px;
+          color: white;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+          }
+        }
+      }
+
+      .stream-error {
+        i {
+          font-size: 2.5rem;
+          color: #e74c3c;
+        }
+      }
 
       iframe {
         width: 100%;
@@ -276,365 +318,160 @@
 .series-watch {
   background: #141414;
   min-height: 100vh;
+  padding-top: 120px;
 
   .video-section {
-    position: relative;
+    width: 100%;
     background: #000;
-    margin-bottom: 2rem;
+    position: relative;
     margin-top: -60px;
+    margin-bottom: 2rem;
 
     .video-container {
+      position: relative;
       width: 100%;
       aspect-ratio: 16/9;
-      max-height: calc(100vh - 60px);
-      
+      background: #000;
+
+      .loading-overlay,
+      .stream-error {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        gap: 1rem;
+
+        p {
+          font-size: 1.1rem;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        button {
+          padding: 0.8rem 2rem;
+          background: #3498db;
+          border: none;
+          border-radius: 4px;
+          color: white;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+          }
+        }
+      }
+
+      .stream-error {
+        i {
+          font-size: 2.5rem;
+          color: #e74c3c;
+        }
+      }
+
       iframe {
         width: 100%;
         height: 100%;
         border: none;
       }
     }
-
-    .episode-navigation {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1rem;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
-
-      .nav-button {
-        padding: 0.8rem 1.5rem;
-        background: rgba(52, 152, 219, 0.8);
-        border: none;
-        border-radius: 4px;
-        color: white;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.2s ease;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-
-        &:hover:not(:disabled) {
-          background: rgba(52, 152, 219, 1);
-          transform: translateY(-2px);
-        }
-
-        &:disabled {
-          background: rgba(255, 255, 255, 0.1);
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        i {
-          font-size: 1rem;
-        }
-      }
-
-      .episode-info {
-        font-size: 1.1rem;
-        color: white;
-        padding: 0.8rem 1.5rem;
-        background: rgba(0, 0, 0, 0.6);
-        border-radius: 4px;
-        font-weight: 500;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-    }
-  }
-
-  .tv-info-section {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    color: #fff;
-
-    .show-info {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 2rem;
-
-      .poster {
-        width: 200px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      }
-
-      .details {
-        flex: 1;
-
-        h1 {
-          font-size: 2.5rem;
-          margin-bottom: 1rem;
-          font-weight: 600;
-        }
-
-        .meta {
-          display: flex;
-          gap: 1.5rem;
-          margin-bottom: 1rem;
-          color: rgba(255, 255, 255, 0.7);
-          font-size: 1.1rem;
-        }
-
-        .overview {
-          line-height: 1.6;
-          color: rgba(255, 255, 255, 0.8);
-          font-size: 1.1rem;
-        }
-      }
-    }
-
-    .seasons-navigation {
-      margin-bottom: 2rem;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 1rem;
-      border-radius: 8px;
-
-      .season-buttons {
-        display: flex;
-        gap: 0.8rem;
-        flex-wrap: wrap;
-
-        .season-button {
-          padding: 0.8rem 1.5rem;
-          background: rgba(255, 255, 255, 0.1);
-          border: none;
-          border-radius: 4px;
-          color: white;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          font-weight: 500;
-          font-size: 0.9rem;
-
-          &:hover {
-            background: rgba(52, 152, 219, 0.6);
-          }
-
-          &.active {
-            background: #3498db;
-          }
-        }
-      }
-    }
-
-    .current-episode {
-      background: rgba(52, 152, 219, 0.1);
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      border: 1px solid rgba(52, 152, 219, 0.2);
-
-      h3 {
-        color: #3498db;
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .episode-info {
-        .episode-number {
-          display: inline-block;
-          background: rgba(52, 152, 219, 0.2);
-          padding: 0.4rem 1rem;
-          border-radius: 4px;
-          margin-bottom: 0.8rem;
-          font-size: 0.9rem;
-          font-weight: 500;
-        }
-
-        h4 {
-          font-size: 1.4rem;
-          margin-bottom: 0.8rem;
-          font-weight: 500;
-        }
-
-        p {
-          color: rgba(255, 255, 255, 0.8);
-          line-height: 1.6;
-          font-size: 1.1rem;
-        }
-      }
-    }
-
-    .episodes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-
-      .episode-card {
-        position: relative;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 8px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-
-        &:hover {
-          transform: translateY(-4px);
-          border-color: rgba(52, 152, 219, 0.4);
-
-          .play-overlay {
-            opacity: 1;
-          }
-        }
-
-        &.active {
-          border: 2px solid #3498db;
-          background: rgba(52, 152, 219, 0.1);
-        }
-
-        .episode-thumbnail {
-          position: relative;
-          aspect-ratio: 16/9;
-
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-
-          .no-image {
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            i {
-              font-size: 2rem;
-              color: rgba(255, 255, 255, 0.3);
-            }
-          }
-
-          .play-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-
-            i {
-              font-size: 2.5rem;
-              color: white;
-              filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-            }
-          }
-        }
-
-        .episode-details {
-          padding: 1.2rem;
-
-          .episode-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.8rem;
-
-            .episode-number {
-              color: #3498db;
-              font-weight: 500;
-            }
-
-            .episode-runtime {
-              color: rgba(255, 255, 255, 0.6);
-              font-size: 0.9rem;
-            }
-          }
-
-          h3 {
-            font-size: 1.1rem;
-            margin: 0;
-            font-weight: 500;
-            line-height: 1.4;
-          }
-        }
-      }
-    }
   }
 
   .content-section {
     max-width: 1400px;
-    margin: 2rem auto;
+    margin: 0 auto;
     padding: 0 2rem;
     color: white;
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
 
-    .current-episode-info {
-      background: rgba(52, 152, 219, 0.1);
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      border: 1px solid rgba(52, 152, 219, 0.2);
+    .main-content {
+      .current-episode-info {
+        background: rgba(52, 152, 219, 0.1);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(52, 152, 219, 0.2);
+        backdrop-filter: blur(10px);
 
-      h2 {
-        color: #3498db;
-        margin-bottom: 1rem;
-        font-size: 1.4rem;
-        font-weight: 600;
-      }
-
-      .episode-details {
-        .episode-number {
-          display: inline-block;
-          background: rgba(52, 152, 219, 0.2);
-          padding: 0.4rem 1rem;
-          border-radius: 4px;
-          margin-bottom: 0.8rem;
-          font-size: 0.9rem;
-        }
-
-        h3 {
+        h2 {
+          color: #3498db;
+          margin-bottom: 1.5rem;
           font-size: 1.6rem;
-          margin-bottom: 0.8rem;
+          font-weight: 600;
+          letter-spacing: 0.5px;
         }
 
-        p {
-          color: rgba(255, 255, 255, 0.8);
-          line-height: 1.6;
-          font-size: 1.1rem;
+        .episode-details {
+          .episode-number {
+            display: inline-block;
+            background: rgba(52, 152, 219, 0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+          }
+
+          h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            font-weight: 500;
+          }
+
+          p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            font-size: 1.1rem;
+          }
         }
       }
     }
 
-    .episodes-container {
+    .episodes-sidebar {
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 1.5rem;
+      border-radius: 12px;
+      height: calc(100vh - 200px);
+      position: sticky;
+      top: 120px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
 
       .season-tabs {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.2);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
 
         .season-tab {
-          padding: 0.6rem 1.2rem;
+          padding: 0.7rem 1.5rem;
           background: rgba(255, 255, 255, 0.1);
           border: none;
-          border-radius: 4px;
+          border-radius: 6px;
           color: white;
           cursor: pointer;
           transition: all 0.2s ease;
-          font-size: 0.9rem;
+          font-size: 0.95rem;
+          font-weight: 500;
+          margin-right: 0.8rem;
 
           &:hover {
             background: rgba(52, 152, 219, 0.6);
@@ -643,24 +480,47 @@
           &.active {
             background: #3498db;
           }
+
+          &:last-child {
+            margin-right: 0;
+          }
         }
       }
 
-      .episodes-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
+      .episodes-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 3px;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.3);
+          }
+        }
 
         .episode-card {
           background: rgba(255, 255, 255, 0.05);
           border-radius: 8px;
           overflow: hidden;
           cursor: pointer;
-          transition: transform 0.2s ease;
+          transition: all 0.2s ease;
           border: 1px solid rgba(255, 255, 255, 0.1);
+          margin-bottom: 1rem;
 
           &:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
             border-color: rgba(52, 152, 219, 0.4);
 
             .play-overlay {
@@ -683,6 +543,20 @@
               object-fit: cover;
             }
 
+            .no-image {
+              width: 100%;
+              height: 100%;
+              background: rgba(255, 255, 255, 0.05);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              i {
+                font-size: 2rem;
+                color: rgba(255, 255, 255, 0.3);
+              }
+            }
+
             .play-overlay {
               position: absolute;
               inset: 0;
@@ -696,6 +570,7 @@
               i {
                 font-size: 2rem;
                 color: white;
+                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
               }
             }
           }
@@ -712,11 +587,13 @@
             }
 
             h3 {
-              font-size: 1.1rem;
+              font-size: 1rem;
               margin-bottom: 0.5rem;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
+              color: white;
+              font-weight: 500;
             }
 
             .episode-overview {
@@ -726,28 +603,50 @@
               -webkit-line-clamp: 2;
               -webkit-box-orient: vertical;
               overflow: hidden;
+              line-height: 1.5;
             }
+          }
+
+          &:last-child {
+            margin-bottom: 0;
           }
         }
       }
     }
   }
-}
 
-@media (max-width: 768px) {
-  .series-watch {
+  @media (max-width: 1024px) {
+    .content-section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+
+      .episodes-sidebar {
+        height: auto;
+        position: static;
+        max-height: 600px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding-top: 100px;
+
     .content-section {
       padding: 0 1rem;
 
-      .episodes-container {
-        padding: 1rem;
+      .main-content {
+        .current-episode-info {
+          padding: 1.5rem;
 
-        .season-tabs {
-          justify-content: center;
-        }
+          h2 {
+            font-size: 1.4rem;
+          }
 
-        .episodes-grid {
-          grid-template-columns: 1fr;
+          .episode-details {
+            h3 {
+              font-size: 1.6rem;
+            }
+          }
         }
       }
     }

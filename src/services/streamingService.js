@@ -1,102 +1,66 @@
 const STREAMING_SOURCES = {
   VIDSRC: 'vidsrc',
-  SUPEREMBED: 'superembed',
-  TWOEMBED: '2embed'
+  VIDPLAY: 'vidplay',
+  STREAMTAPE: 'streamtape'
 };
 
 export const streamingService = {
-  // Current source (can be changed by user preference)
   currentSource: STREAMING_SOURCES.VIDSRC,
 
-  // Source URLs
   sources: {
     [STREAMING_SOURCES.VIDSRC]: {
-      base: 'https://vidsrc.to/embed',
-      pro: 'https://vidsrc.pro/embed'
+      base: 'https://vidsrc.xyz/embed'
     },
-    [STREAMING_SOURCES.SUPEREMBED]: {
-      base: 'https://multiembed.mov/directstream.php'
+    [STREAMING_SOURCES.VIDPLAY]: {
+      base: 'https://vidplay.site/e'
     },
-    [STREAMING_SOURCES.TWOEMBED]: {
-      base: 'https://2embed.org/embed'
+    [STREAMING_SOURCES.STREAMTAPE]: {
+      base: 'https://streamtape.com/e'
     }
   },
 
-  // Get streaming URL based on current source
   getStreamingUrl(mediaType, id, season = null, episode = null) {
-    switch (this.currentSource) {
-      case STREAMING_SOURCES.VIDSRC:
-        return this.getVidsrcUrl(mediaType, id, season, episode);
-      case STREAMING_SOURCES.SUPEREMBED:
-        return this.getSuperembedUrl(mediaType, id, season, episode);
-      case STREAMING_SOURCES.TWOEMBED:
-        return this.get2embedUrl(mediaType, id, season, episode);
-      default:
-        return this.getVidsrcUrl(mediaType, id, season, episode);
-    }
-  },
+    const source = this.currentSource;
+    const baseUrl = this.sources[source].base;
 
-  // Source-specific URL generators
-  getVidsrcUrl(mediaType, id, season, episode) {
-    const base = this.sources[STREAMING_SOURCES.VIDSRC].base;
-    if (mediaType === 'movie') {
-      return `${base}/movie/${id}`;
-    }
-    return season && episode ? `${base}/tv/${id}/${season}/${episode}` : `${base}/tv/${id}`;
-  },
-
-  getSuperembedUrl(mediaType, id, season, episode) {
-    const base = this.sources[STREAMING_SOURCES.SUPEREMBED].base;
-    const params = new URLSearchParams({
-      video_id: id,
-      tmdb: 1,
-      type: mediaType
-    });
-
-    if (mediaType === 'tv' && season && episode) {
-      params.append('season', season);
-      params.append('episode', episode);
-    }
-
-    return `${base}?${params.toString()}`;
-  },
-
-  get2embedUrl(mediaType, id, season, episode) {
-    const base = this.sources[STREAMING_SOURCES.TWOEMBED].base;
-    if (mediaType === 'movie') {
-      return `${base}/tmdb/movie?id=${id}`;
-    }
-    return `${base}/tmdb/tv?id=${id}&s=${season}&e=${episode}`;
-  },
-
-  // Change streaming source
-  setSource(source) {
-    if (STREAMING_SOURCES[source]) {
-      this.currentSource = source;
-    }
-  },
-
-  // Check if source is available
-  async checkSource(url) {
     try {
-      const response = await fetch(url, { method: 'HEAD' });
-      return response.ok;
+      switch (source) {
+        case STREAMING_SOURCES.VIDSRC:
+          if (mediaType === 'movie') {
+            return `${baseUrl}/movie/${id}`;
+          }
+          return `${baseUrl}/tv/${id}/${season}/${episode}`;
+
+        case STREAMING_SOURCES.VIDPLAY:
+          if (mediaType === 'movie') {
+            return `${baseUrl}/movie/${id}`;
+          }
+          return `${baseUrl}/series/${id}-${season}-${episode}`;
+
+        case STREAMING_SOURCES.STREAMTAPE:
+          if (mediaType === 'movie') {
+            return `${baseUrl}/movie/${id}`;
+          }
+          return `${baseUrl}/series/${id}/${season}/${episode}`;
+
+        default:
+          return this.getVidsrcUrl(mediaType, id, season, episode);
+      }
     } catch (error) {
-      return false;
+      console.error('Error generating streaming URL:', error);
+      return this.getVidsrcUrl(mediaType, id, season, episode);
     }
   },
 
-  // Get best available source
-  async getBestSource(mediaType, id, season = null, episode = null) {
-    for (const source of Object.values(STREAMING_SOURCES)) {
-      this.currentSource = source;
-      const url = this.getStreamingUrl(mediaType, id, season, episode);
-      if (await this.checkSource(url)) {
-        return url;
-      }
+  getVidsrcUrl(mediaType, id, season = null, episode = null) {
+    const baseUrl = this.sources[STREAMING_SOURCES.VIDSRC].base;
+    if (mediaType === 'movie') {
+      return `${baseUrl}/movie/${id}`;
     }
-    // Fallback to default source
-    this.currentSource = STREAMING_SOURCES.VIDSRC;
+    return `${baseUrl}/tv/${id}/${season}/${episode}`;
+  },
+
+  async getBestSource(mediaType, id, season = null, episode = null) {
     return this.getStreamingUrl(mediaType, id, season, episode);
   }
 }; 

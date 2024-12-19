@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import MovieCard from '../../common/MovieCard';
-import LoadingSpinner from '../../common/LoadingSpinner';
 import { tmdbService } from '../../../services/tmdb.service';
+import SeriesCard from '../../common/SeriesCard';
+import LoadingSpinner from '../../common/LoadingSpinner';
 import './TVShowsPage.scss';
 
 export const TVShowsPage = () => {
@@ -40,14 +40,7 @@ export const TVShowsPage = () => {
         <h1>TV Shows</h1>
         <div className="shows-grid">
           {shows.slice(0, displayCount).map(show => (
-            <MovieCard
-              key={show.id}
-              movie={{
-                ...show,
-                title: show.name,
-                release_date: show.first_air_date
-              }}
-            />
+            <SeriesCard key={show.id} show={show} />
           ))}
         </div>
         {displayCount < shows.length && (
