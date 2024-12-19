@@ -190,7 +190,7 @@
     
     .genres-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
 
       .genre-card {
@@ -199,34 +199,31 @@
         border-radius: 12px;
         overflow: hidden;
         text-decoration: none;
-        background-size: cover;
-        background-position: center;
         transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background-color: rgba(0, 0, 0, 0.5);
 
         &::before {
           content: '';
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: inherit;
-          transition: all 0.3s ease;
-          filter: blur(0);
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.8)
+          );
+          opacity: 0.8;
+          transition: opacity 0.3s ease;
         }
 
         &:hover {
           transform: translateY(-5px);
-          border-color: #3498db;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
           &::before {
-            filter: blur(2px);
+            opacity: 0.6;
           }
 
-          .explore i {
-            transform: translateX(8px);
+          .genre-content {
+            transform: translateY(-5px);
           }
         }
 
@@ -234,40 +231,22 @@
           position: relative;
           z-index: 1;
           padding: 1.5rem;
+          color: #fff;
           height: 100%;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
+          transition: transform 0.3s ease;
 
           h3 {
-            color: #fff;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
           }
 
-          .description {
-            color: rgba(255, 255, 255, 0.8);
+          .movie-count {
             font-size: 0.9rem;
-            margin-bottom: 1rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-
-          .explore {
-            color: #3498db;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-
-            i {
-              transition: transform 0.3s ease;
-            }
+            opacity: 0.8;
           }
         }
       }

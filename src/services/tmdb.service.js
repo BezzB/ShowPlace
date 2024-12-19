@@ -2,6 +2,29 @@ import TMDB_CONFIG from '../config/tmdb.config';
 
 const BASE_URL = TMDB_CONFIG.BASE_URL;
 const API_KEY = TMDB_CONFIG.API_KEY;
+const IMAGE_BASE_URL = TMDB_CONFIG.IMAGE_BASE_URL;
+
+const genreBackgrounds = {
+  28: '/action-background.jpg',    // Action
+  12: '/adventure-background.jpg', // Adventure
+  16: '/animation-background.jpg', // Animation
+  35: '/comedy-background.jpg',    // Comedy
+  80: '/crime-background.jpg',     // Crime
+  99: '/documentary-background.jpg', // Documentary
+  18: '/drama-background.jpg',     // Drama
+  10751: '/family-background.jpg', // Family
+  14: '/fantasy-background.jpg',   // Fantasy
+  36: '/history-background.jpg',   // History
+  27: '/horror-background.jpg',    // Horror
+  10402: '/music-background.jpg',  // Music
+  9648: '/mystery-background.jpg', // Mystery
+  10749: '/romance-background.jpg', // Romance
+  878: '/scifi-background.jpg',    // Science Fiction
+  10770: '/tv-background.jpg',     // TV Movie
+  53: '/thriller-background.jpg',  // Thriller
+  10752: '/war-background.jpg',    // War
+  37: '/western-background.jpg',   // Western
+};
 
 export const tmdbService = {
   // Get trending movies with more options
@@ -144,6 +167,33 @@ export const tmdbService = {
     } catch (error) {
       console.error('Error fetching genre backdrop:', error);
       throw error;
+    }
+  },
+
+  // Add getGenreBackground to the tmdbService object
+  getGenreBackground: async (genreId) => {
+    try {
+      // First try to get a dynamic background from TMDB
+      const response = await fetch(
+        `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`
+      );
+      const data = await response.json();
+      
+      // If we have results with backdrop_path, use the first one
+      if (data.results && data.results[0]?.backdrop_path) {
+        return `${IMAGE_BASE_URL}original${data.results[0].backdrop_path}`;
+      }
+      
+      // If no dynamic background, use our fallback backgrounds
+      if (genreBackgrounds[genreId]) {
+        return genreBackgrounds[genreId];
+      }
+      
+      // If all else fails, return a default background
+      return '/default-genre-background.jpg';
+    } catch (error) {
+      console.error('Error fetching genre background:', error);
+      return '/default-genre-background.jpg';
     }
   }
 }; 
