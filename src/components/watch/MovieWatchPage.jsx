@@ -5,6 +5,7 @@ import { getImageUrl } from '../../config/tmdb.config';
 import { streamingService } from '../../services/streamingService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import './WatchPage.scss';
+import { WatchNavBar } from './WatchNavBar';
 
 export const MovieWatchPage = () => {
   const { id } = useParams();
@@ -43,6 +44,11 @@ export const MovieWatchPage = () => {
 
   return (
     <div className="watch-page">
+      <WatchNavBar 
+        title={movie?.title}
+        isSeries={false}
+      />
+
       <div className="video-section">
         <div className="video-container">
           <iframe

@@ -5,6 +5,7 @@ import { tvServices } from '../../services/tvServices';
 import { streamingService } from '../../services/streamingService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import './WatchPage.scss';
+import { WatchNavBar } from './WatchNavBar';
 
 export const SeriesWatchPage = () => {
   const { id } = useParams();
@@ -22,7 +23,6 @@ export const SeriesWatchPage = () => {
         setLoading(true);
         const result = await tvServices.getShowDetails(id);
         setSeries(result.data);
-        // Set first available season
         if (result.data.seasons?.length > 0) {
           const firstValidSeason = result.data.seasons.find(s => s.episode_count > 0);
           if (firstValidSeason) {
@@ -38,6 +38,36 @@ export const SeriesWatchPage = () => {
 
     fetchSeries();
   }, [id]);
+
+  const handleNextEpisode = () => {
+    const currentSeason = series.seasons.find(s => s.season_number === selectedSeason);
+    if (selectedEpisode < currentSeason.episode_count) {
+      setSelectedEpisode(prev => prev + 1);
+    } else if (selectedSeason < series.number_of_seasons) {
+      const nextSeason = series.seasons.find(s => s.season_number === selectedSeason + 1);
+      if (nextSeason && nextSeason.episode_count > 0) {
+        setSelectedSeason(prev => prev + 1);
+        setSelectedEpisode(1);
+      }
+    }
+  };
+
+  const handlePreviousEpisode = () => {
+    if (selectedEpisode > 1) {
+      setSelectedEpisode(prev => prev - 1);
+    } else if (selectedSeason > 1) {
+      const prevSeason = series.seasons.find(s => s.season_number === selectedSeason - 1);
+      if (prevSeason && prevSeason.episode_count > 0) {
+        setSelectedSeason(prev => prev - 1);
+        setSelectedEpisode(prevSeason.episode_count);
+      }
+    }
+  };
+
+  const handleSeasonChange = (seasonNumber) => {
+    setSelectedSeason(seasonNumber);
+    setSelectedEpisode(1);
+  };
 
   useEffect(() => {
     if (series && selectedSeason) {
@@ -66,6 +96,16 @@ export const SeriesWatchPage = () => {
 
   return (
     <div className="watch-page series-watch">
+      <WatchNavBar 
+        title={series?.name}
+        seasons={series?.seasons || []}
+        selectedSeason={selectedSeason}
+        selectedEpisode={selectedEpisode}
+        onSeasonChange={handleSeasonChange}
+        onEpisodeChange={setSelectedEpisode}
+        isSeries={true}
+      />
+
       <div className="video-section">
         <div className="video-container">
           <iframe
@@ -74,7 +114,7 @@ export const SeriesWatchPage = () => {
             height="100%"
             frameBorder="0"
             allowFullScreen
-            title={`${series.name} S${selectedSeason}E${selectedEpisode}`}
+            title={`${series?.name} S${selectedSeason}E${selectedEpisode}`}
           ></iframe>
         </div>
       </div>
@@ -94,40 +134,11 @@ export const SeriesWatchPage = () => {
         </div>
 
         <div className="episodes-section">
-          <div className="seasons-selector">
-            <select 
-              value={selectedSeason} 
-              onChange={(e) => {
-                setSelectedSeason(Number(e.target.value));
-                setSelectedEpisode(1);
-              }}
-            >
-              {series.seasons
-                .filter(season => season.episode_count > 0)
-                .map(season => (
-                  <option key={season.id} value={season.season_number}>
-                    Season {season.season_number} ({season.episode_count} Episodes)
-                  </option>
-                ))}
-            </select>
-          </div>
-
-          {currentEpisode && (
-            <div className="current-episode">
-              <h3>Now Playing</h3>
-              <div className="episode-info">
-                <span className="episode-number">S{selectedSeason} E{selectedEpisode}</span>
-                <h4>{currentEpisode.name}</h4>
-                <p>{currentEpisode.overview}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="episodes-list">
+          <div className="episodes-grid">
             {currentSeason?.episodes?.map(episode => (
               <div 
                 key={episode.id} 
-                className={`episode-item ${selectedEpisode === episode.episode_number ? 'active' : ''}`}
+                className={`episode-card ${selectedEpisode === episode.episode_number ? 'active' : ''}`}
                 onClick={() => setSelectedEpisode(episode.episode_number)}
               >
                 <div className="episode-thumbnail">
@@ -148,17 +159,11 @@ export const SeriesWatchPage = () => {
                     <span className="episode-runtime">{episode.runtime} min</span>
                   </div>
                   <h3>{episode.name}</h3>
-                  <p className="air-date">Aired: {new Date(episode.air_date).toLocaleDateString()}</p>
-                  <p className="overview">{episode.overview}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-
-        <button className="back-button" onClick={() => navigate(-1)}>
-          <i className="fas fa-arrow-left"></i> Back
-        </button>
       </div>
     </div>
   );

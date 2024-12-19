@@ -220,17 +220,43 @@ export const tmdbService = {
       );
       const showData = await showResponse.json();
 
-      // Get season details with episodes
-      const seasonPromises = showData.seasons.map(season =>
-        fetch(`${BASE_URL}/tv/${id}/season/${season.season_number}?api_key=${API_KEY}`)
-          .then(res => res.json())
-      );
-      const seasonData = await Promise.all(seasonPromises);
+      // Get details for each season
+      const seasonPromises = showData.seasons.map(async (season) => {
+        try {
+          const seasonResponse = await fetch(
+            `${BASE_URL}/tv/${id}/season/${season.season_number}?api_key=${API_KEY}`
+          );
+          const seasonData = await seasonResponse.json();
 
-      // Combine show data with season details
+          // Get details for each episode
+          const episodePromises = seasonData.episodes.map(async (episode) => {
+            try {
+              const episodeResponse = await fetch(
+                `${BASE_URL}/tv/${id}/season/${season.season_number}/episode/${episode.episode_number}?api_key=${API_KEY}`
+              );
+              return await episodeResponse.json();
+            } catch (error) {
+              console.error(`Error fetching episode ${episode.episode_number} details:`, error);
+              return episode; // Return basic episode data if detailed fetch fails
+            }
+          });
+
+          const episodes = await Promise.all(episodePromises);
+          return {
+            ...seasonData,
+            episodes: episodes
+          };
+        } catch (error) {
+          console.error(`Error fetching season ${season.season_number} details:`, error);
+          return season; // Return basic season data if detailed fetch fails
+        }
+      });
+
+      const seasons = await Promise.all(seasonPromises);
+
       return {
         ...showData,
-        seasons: seasonData
+        seasons: seasons
       };
     } catch (error) {
       console.error('Error fetching TV show details:', error);
@@ -238,27 +264,43 @@ export const tmdbService = {
     }
   },
 
-  // Get popular TV shows by genre
-  getTVShowsByGenre: async (genreId, page = 1) => {
+  // Get TV shows by genre with pagination
+  getTVShowsByGenre: async (genreId, page = 1, limit = 100) => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=${genreId}&page=${page}&sort_by=popularity.desc`
-      );
-      return await response.json();
+      const promises = [];
+      let currentPage = 1;
+      let totalShows = 0;
+
+      // Keep fetching pages until we reach the limit
+      while (totalShows < limit) {
+        const response = await fetch(
+          `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=${genreId}&page=${currentPage}&sort_by=popularity.desc`
+        );
+        const data = await response.json();
+        
+        promises.push(data.results);
+        totalShows += data.results.length;
+        currentPage++;
+
+        if (currentPage > data.total_pages) break;
+      }
+
+      const results = await Promise.all(promises);
+      return results.flat().slice(0, limit);
     } catch (error) {
       console.error('Error fetching TV shows by genre:', error);
       throw error;
     }
   },
 
-  // Get TV show recommendations
-  getTVShowRecommendations: async (id) => {
+  // Get TV show recommendations with pagination
+  getTVShowRecommendations: async (id, limit = 20) => {
     try {
       const response = await fetch(
         `${BASE_URL}/tv/${id}/recommendations?api_key=${API_KEY}`
       );
       const data = await response.json();
-      return data.results;
+      return data.results.slice(0, limit);
     } catch (error) {
       console.error('Error fetching TV show recommendations:', error);
       throw error;
@@ -274,6 +316,31 @@ export const tmdbService = {
       return await response.json();
     } catch (error) {
       console.error('Error searching TV shows:', error);
+      throw error;
+    }
+  },
+
+  // Get all TV shows with pagination
+  getAllTVShows: async (page = 1) => {
+    try {
+      // First get total pages
+      const initialResponse = await fetch(
+        `${BASE_URL}/tv/popular?api_key=${API_KEY}&page=1`
+      );
+      const initialData = await initialResponse.json();
+      const totalPages = Math.min(initialData.total_pages, 10); // Limit to 10 pages (200 shows) to avoid rate limits
+
+      // Fetch all pages in parallel
+      const promises = Array.from({ length: totalPages }, (_, i) =>
+        fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&page=${i + 1}`)
+          .then(res => res.json())
+          .then(data => data.results)
+      );
+
+      const results = await Promise.all(promises);
+      return results.flat(); // Combine all results into a single array
+    } catch (error) {
+      console.error('Error fetching all TV shows:', error);
       throw error;
     }
   }
