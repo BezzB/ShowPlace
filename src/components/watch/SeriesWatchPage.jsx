@@ -12,6 +12,7 @@ export const SeriesWatchPage = () => {
   const [series, setSeries] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode, setSelectedEpisode] = useState(1);
+  const [currentEpisode, setCurrentEpisode] = useState(null);
   const [streamUrl, setStreamUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -21,8 +22,12 @@ export const SeriesWatchPage = () => {
         setLoading(true);
         const result = await tvServices.getShowDetails(id);
         setSeries(result.data);
+        // Set first available season
         if (result.data.seasons?.length > 0) {
-          setSelectedSeason(result.data.seasons[0].season_number);
+          const firstValidSeason = result.data.seasons.find(s => s.episode_count > 0);
+          if (firstValidSeason) {
+            setSelectedSeason(firstValidSeason.season_number);
+          }
         }
       } catch (error) {
         console.error('Error:', error);
@@ -35,19 +40,32 @@ export const SeriesWatchPage = () => {
   }, [id]);
 
   useEffect(() => {
+    if (series && selectedSeason) {
+      const season = series.seasons.find(s => s.season_number === selectedSeason);
+      if (season && season.episodes?.length > 0) {
+        setCurrentEpisode(season.episodes[selectedEpisode - 1]);
+      }
+    }
+  }, [series, selectedSeason, selectedEpisode]);
+
+  useEffect(() => {
     const getStreamUrl = async () => {
       const url = await streamingService.getBestSource('tv', id, selectedSeason, selectedEpisode);
       setStreamUrl(url);
     };
 
-    getStreamUrl();
-  }, [id, selectedSeason, selectedEpisode]);
+    if (currentEpisode) {
+      getStreamUrl();
+    }
+  }, [id, selectedSeason, selectedEpisode, currentEpisode]);
 
   if (loading) return <LoadingSpinner />;
   if (!series) return <div className="error-message">Series not found</div>;
 
+  const currentSeason = series.seasons.find(s => s.season_number === selectedSeason);
+
   return (
-    <div className="watch-page">
+    <div className="watch-page series-watch">
       <div className="video-section">
         <div className="video-container">
           <iframe
@@ -84,30 +102,57 @@ export const SeriesWatchPage = () => {
                 setSelectedEpisode(1);
               }}
             >
-              {series.seasons.map(season => (
-                <option key={season.id} value={season.season_number}>
-                  Season {season.season_number}
-                </option>
-              ))}
+              {series.seasons
+                .filter(season => season.episode_count > 0)
+                .map(season => (
+                  <option key={season.id} value={season.season_number}>
+                    Season {season.season_number} ({season.episode_count} Episodes)
+                  </option>
+                ))}
             </select>
           </div>
 
+          {currentEpisode && (
+            <div className="current-episode">
+              <h3>Now Playing</h3>
+              <div className="episode-info">
+                <span className="episode-number">S{selectedSeason} E{selectedEpisode}</span>
+                <h4>{currentEpisode.name}</h4>
+                <p>{currentEpisode.overview}</p>
+              </div>
+            </div>
+          )}
+
           <div className="episodes-list">
-            {series.seasons
-              .find(s => s.season_number === selectedSeason)
-              ?.episodes?.map(episode => (
-                <div 
-                  key={episode.id} 
-                  className={`episode-item ${selectedEpisode === episode.episode_number ? 'active' : ''}`}
-                  onClick={() => setSelectedEpisode(episode.episode_number)}
-                >
-                  <div className="episode-number">E{episode.episode_number}</div>
-                  <div className="episode-details">
-                    <h3>{episode.name}</h3>
-                    <p>{episode.overview}</p>
+            {currentSeason?.episodes?.map(episode => (
+              <div 
+                key={episode.id} 
+                className={`episode-item ${selectedEpisode === episode.episode_number ? 'active' : ''}`}
+                onClick={() => setSelectedEpisode(episode.episode_number)}
+              >
+                <div className="episode-thumbnail">
+                  {episode.still_path ? (
+                    <img src={getImageUrl(episode.still_path)} alt={episode.name} />
+                  ) : (
+                    <div className="no-image">
+                      <i className="fas fa-film"></i>
+                    </div>
+                  )}
+                  <div className="play-overlay">
+                    <i className="fas fa-play"></i>
                   </div>
                 </div>
-              ))}
+                <div className="episode-details">
+                  <div className="episode-header">
+                    <span className="episode-number">Episode {episode.episode_number}</span>
+                    <span className="episode-runtime">{episode.runtime} min</span>
+                  </div>
+                  <h3>{episode.name}</h3>
+                  <p className="air-date">Aired: {new Date(episode.air_date).toLocaleDateString()}</p>
+                  <p className="overview">{episode.overview}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
