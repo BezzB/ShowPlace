@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MovieCard from '../../../common/MovieCard';
 import './Sections.scss';
 
 const Popular = ({ items = [] }) => {
   const navigate = useNavigate();
   const [showAll, setShowAll] = useState(false);
-  const displayedItems = showAll ? items : items.slice(0, 4);
+  const displayedItems = showAll ? items : items.slice(0, 5);
 
-  if (!items || items.length === 0) {
-    return null;
-  }
+  if (!items || items.length === 0) return null;
 
   return (
     <section className="section popular-section">
@@ -18,16 +16,18 @@ const Popular = ({ items = [] }) => {
         <div className="section-header">
           <h2 className="section-title">Popular on ShowPlace</h2>
           <div className="header-actions">
-            <button 
-              className="view-all"
-              onClick={() => setShowAll(!showAll)}
-            >
-              {showAll ? (
-                <>Show Less <i className="fas fa-chevron-up"></i></>
-              ) : (
-                <>View More <i className="fas fa-chevron-down"></i></>
-              )}
-            </button>
+            {items.length > 5 && (
+              <button 
+                className="view-all"
+                onClick={() => setShowAll(!showAll)}
+              >
+                {showAll ? (
+                  <>Show Less <i className="fas fa-chevron-up"></i></>
+                ) : (
+                  <>Show More <i className="fas fa-chevron-down"></i></>
+                )}
+              </button>
+            )}
             <button 
               className="view-all"
               onClick={() => navigate('/popular')}

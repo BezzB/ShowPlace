@@ -5,6 +5,7 @@ import TrendingPage from "../components/pages/Trending/TrendingPage";
 import PopularPage from "../components/pages/Popular/PopularPage";
 import TopRatedPage from "../components/pages/TopRated/TopRatedPage";
 import UpcomingPage from "../components/pages/Upcoming/UpcomingPage";
+import { WatchPage } from "../components/watch/WatchPage";
 
 export const routes = [
   {
@@ -34,5 +35,9 @@ export const routes = [
   {
     path: "/upcoming",
     element: UpcomingPage,
+  },
+  {
+    path: "/watch/:id",
+    element: WatchPage,
   },
 ]; 

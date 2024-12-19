@@ -1,38 +1,44 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { getImageUrl } from '../../../../config/tmdb.config';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import MovieCard from '../../../common/MovieCard';
 import './Sections.scss';
 
-const Upcoming = ({ items }) => {
+const Upcoming = ({ items = [] }) => {
+  const navigate = useNavigate();
+  const [showAll, setShowAll] = useState(false);
+  const displayedItems = showAll ? items : items.slice(0, 5);
+
+  if (!items || items.length === 0) return null;
+
   return (
     <section className="section upcoming-section">
       <div className="container">
         <div className="section-header">
           <h2 className="section-title">Coming Soon</h2>
-          <Link to="/upcoming" className="view-all">
-            View All <i className="fas fa-arrow-right"></i>
-          </Link>
+          <div className="header-actions">
+            {items.length > 5 && (
+              <button 
+                className="view-all"
+                onClick={() => setShowAll(!showAll)}
+              >
+                {showAll ? (
+                  <>Show Less <i className="fas fa-chevron-up"></i></>
+                ) : (
+                  <>Show More <i className="fas fa-chevron-down"></i></>
+                )}
+              </button>
+            )}
+            <button 
+              className="view-all"
+              onClick={() => navigate('/upcoming')}
+            >
+              View All <i className="fas fa-arrow-right"></i>
+            </button>
+          </div>
         </div>
         <div className="movies-grid">
-          {items?.map((movie) => (
-            <div key={movie.id} className="movie-card">
-              <div className="card-image">
-                <img src={getImageUrl(movie.poster_path)} alt={movie.title} />
-                <div className="card-overlay">
-                  <div className="release-info">
-                    <i className="fas fa-calendar"></i>
-                    <span>{new Date(movie.release_date).toLocaleDateString()}</span>
-                  </div>
-                  <Link to={`/movie/${movie.id}`} className="play-button">
-                    <i className="fas fa-info-circle"></i>
-                  </Link>
-                </div>
-              </div>
-              <div className="card-content">
-                <h3>{movie.title}</h3>
-                <p className="overview">{movie.overview.substring(0, 100)}...</p>
-              </div>
-            </div>
+          {displayedItems.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
       </div>
