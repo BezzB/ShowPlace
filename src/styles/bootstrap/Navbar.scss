@@ -34,30 +34,16 @@
       margin: 0 0.5rem;
 
       .nav-link {
-        color: #fff !important;
-        font-weight: 500;
-        padding: 0.5rem 1rem !important;
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.5rem 1rem;
         transition: all 0.3s ease;
-        position: relative;
-        
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 0;
-          height: 2px;
-          background-color: #3498db;
-          transition: width 0.3s ease;
+
+        &:hover {
+          color: #fff;
         }
-        
-        &:hover, &.active {
-          color: #3498db !important;
-          
-          &::after {
-            width: 80%;
-          }
+
+        &.active {
+          color: #3498db;
         }
       }
     }
@@ -112,6 +98,49 @@
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+  }
+
+  .user-menu {
+    position: relative;
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #1a1a1a;
+      border-radius: 8px;
+      padding: 0.5rem;
+      min-width: 200px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      display: none;
+
+      a, button {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        color: #fff;
+        text-decoration: none;
+        background: none;
+        border: none;
+        text-align: left;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+
+    &:hover .dropdown-menu {
+      display: block;
     }
   }
 }
@@ -204,5 +233,92 @@
   
   &:focus {
     box-shadow: none;
+  }
+}
+
+// Add these styles while keeping your existing ones
+.user-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+
+  .profile-menu {
+    position: relative;
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      transition: border-color 0.3s ease;
+
+      &:hover {
+        border-color: #3498db;
+      }
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 0.5rem;
+      background: rgba(20, 20, 20, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 0.5rem;
+      min-width: 200px;
+      display: none;
+      z-index: 1000;
+
+      a, button {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        color: #fff;
+        text-decoration: none;
+        background: none;
+        border: none;
+        text-align: left;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #3498db;
+        }
+      }
+
+      .dropdown-divider {
+        border-color: rgba(255, 255, 255, 0.1);
+        margin: 0.5rem 0;
+      }
+    }
+
+    &:hover .dropdown-menu {
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .user-actions {
+    flex-direction: column;
+    align-items: stretch;
+    margin: 1rem 0;
+    gap: 1rem;
+
+    .profile-menu {
+      display: flex;
+      justify-content: center;
+
+      .dropdown-menu {
+        position: static;
+        display: block;
+        margin-top: 1rem;
+        width: 100%;
+      }
+    }
   }
 }

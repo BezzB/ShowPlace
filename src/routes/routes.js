@@ -6,6 +6,12 @@ import PopularPage from "../components/pages/Popular/PopularPage";
 import TopRatedPage from "../components/pages/TopRated/TopRatedPage";
 import UpcomingPage from "../components/pages/Upcoming/UpcomingPage";
 import { WatchPage } from "../components/watch/WatchPage";
+import { MoviesPage } from "../components/pages/Movies/MoviesPage";
+import { TVShowsPage } from "../components/pages/TVShows/TVShowsPage";
+import { MyListPage } from "../components/pages/MyList/MyListPage";
+import { SearchPage } from "../components/pages/Search/SearchPage";
+import { ProfilePage } from "../components/pages/Profile/ProfilePage";
+import { SettingsPage } from "../components/pages/Settings/SettingsPage";
 
 export const routes = [
   {
@@ -39,5 +45,29 @@ export const routes = [
   {
     path: "/watch/:id",
     element: WatchPage,
+  },
+  {
+    path: "/movies",
+    element: MoviesPage,
+  },
+  {
+    path: "/tv-shows",
+    element: TVShowsPage,
+  },
+  {
+    path: "/my-list",
+    element: MyListPage,
+  },
+  {
+    path: "/search",
+    element: SearchPage,
+  },
+  {
+    path: "/profile",
+    element: ProfilePage,
+  },
+  {
+    path: "/settings",
+    element: SettingsPage,
   },
 ]; 

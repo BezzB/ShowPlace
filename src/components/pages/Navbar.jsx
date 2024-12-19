@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react';
-import "../../styles/bootstrap/Navbar.scss";
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AiOutlineMenu, AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import "../../styles/bootstrap/Navbar.scss";
 
 export default function Navbar() {
   const [show, setShow] = useState(false);
@@ -15,23 +15,13 @@ export default function Navbar() {
     setShow(!show);
   };
 
-  useEffect(() => {
-    setShow(false);
-  }, [location]);
-
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
-    
-    setIsSearching(true);
-    try {
-      // You can implement your search logic here
-      // For now, let's navigate to a search results page
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-    } catch (error) {
-      console.error('Search error:', error);
-    } finally {
+    if (searchQuery.trim()) {
+      setIsSearching(true);
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearching(false);
+      setSearchQuery('');
     }
   };
 
@@ -39,9 +29,9 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <Link className="navbar-brand-info" to="/">
-          <img src="./logos.PNG" className="img-fluid" alt="OnClickstore" />
+          <img src="./logos.PNG" className="img-fluid" alt="ShowPlace" />
         </Link>
-        
+
         <button
           className="navbar-toggler border border-info text-info"
           onClick={toggleNavbar}
@@ -54,23 +44,39 @@ export default function Navbar() {
         <div className={show ? 'navbar-collapse-active' : 'collapse navbar-collapse'}>
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link 
-                className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} 
+              <Link
+                className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
                 to="/"
+              >
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`nav-link ${location.pathname === '/movies' ? 'active' : ''}`}
+                to="/movies"
               >
                 Movies
               </Link>
             </li>
             <li className="nav-item">
-              <Link 
-                className={`nav-link ${location.pathname.includes('/series') ? 'active' : ''}`} 
-                to="/series"
+              <Link
+                className={`nav-link ${location.pathname === '/tv-shows' ? 'active' : ''}`}
+                to="/tv-shows"
               >
-                Series
+                TV Shows
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`nav-link ${location.pathname === '/my-list' ? 'active' : ''}`}
+                to="/my-list"
+              >
+                My List
               </Link>
             </li>
           </ul>
-          
+
           <form className="d-flex" role="search" onSubmit={handleSearch}>
             <div className="search-box">
               <input
@@ -82,8 +88,8 @@ export default function Navbar() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 disabled={isSearching}
               />
-              <button 
-                className="btn btn-outline-success" 
+              <button
+                className="btn btn-outline-success"
                 type="submit"
                 disabled={isSearching}
               >
@@ -95,8 +101,21 @@ export default function Navbar() {
               </button>
             </div>
           </form>
-          
-          <button className='btn btn-outline-danger ms-3'>Subscribe Now</button>
+
+          <div className="user-actions">
+            <button className='btn btn-outline-danger ms-3'>Subscribe Now</button>
+            <div className="profile-menu ms-3">
+              <Link to="/profile" className="profile-link">
+                <img src="/default-avatar.png" alt="Profile" className="avatar" />
+              </Link>
+              <div className="dropdown-menu">
+                <Link to="/profile">Profile</Link>
+                <Link to="/settings">Settings</Link>
+                <hr className="dropdown-divider" />
+                <button onClick={() => navigate('/logout')}>Logout</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
