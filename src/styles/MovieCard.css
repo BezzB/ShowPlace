@@ -1,0 +1,26 @@
+.premium-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.premium-banner {
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 4px;
+}
+
+.premium-banner a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+} 

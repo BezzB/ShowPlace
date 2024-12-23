@@ -28,7 +28,11 @@
     "slick-carousel": "^1.8.1",
     "svgo": "^3.0.2",
     "web-vitals": "^2.1.4",
-    "workbox-background-sync": "^6.6.0"
+    "workbox-background-sync": "^6.6.0",
+    "stripe": "^latest",
+    "firebase": "^latest",
+    "analytics": "^latest",
+    "shaka-player": "^latest"
   },
   "scripts": {
     "start": "react-app-rewired start",

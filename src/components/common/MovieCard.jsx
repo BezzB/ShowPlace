@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getImageUrl } from '../../config/tmdb.config';
-import './MovieCard.scss';
+import { AuthContext } from '../../features/auth/AuthProvider';
+import LazyImage from './LazyImage';
+import './MovieCard.css';
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const premium = auth?.premium || false;
 
   if (!movie) return null;
 
@@ -13,7 +16,6 @@ const MovieCard = ({ movie }) => {
     title,
     name,
     poster_path,
-    backdrop_path,
     vote_average,
     release_date,
     first_air_date,
@@ -21,22 +23,34 @@ const MovieCard = ({ movie }) => {
   } = movie;
 
   const displayTitle = title || name;
-  const imageUrl = getImageUrl(poster_path || backdrop_path);
   const releaseDate = release_date || first_air_date;
   const mediaType = title ? 'movie' : 'tv';
 
   const handleWatch = () => {
+    if (!auth?.user) {
+      navigate('/login');
+      return;
+    }
     navigate(`/watch/${mediaType}/${id}`);
   };
 
   return (
     <div className="movie-card">
       <div className="card-image">
-        <img src={imageUrl} alt={displayTitle} />
+        <LazyImage 
+          src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+          alt={displayTitle}
+          placeholder="/placeholder-poster.png"
+        />
+        {movie.premium && !premium && (
+          <div className="premium-overlay">
+            <span>Premium Content</span>
+          </div>
+        )}
         <div className="card-overlay">
           <div className="rating">
             <i className="fas fa-star"></i>
-            <span>{vote_average.toFixed(1)}</span>
+            <span>{vote_average?.toFixed(1)}</span>
           </div>
           <div className="actions">
             <button onClick={handleWatch} className="watch-button">
