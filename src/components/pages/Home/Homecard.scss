@@ -1,0 +1,137 @@
+@import '../../../styles/theme.scss';
+
+.homecard-container {
+  padding-top: 60px; // Space for fixed navigation
+  min-height: 100vh;
+  background-color: $background-dark;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    padding: $spacing-lg $spacing-xl;
+    color: $text-light;
+  }
+
+  .premium-banner {
+    background: $premium-gradient;
+    padding: $spacing-md;
+    margin: 0 $spacing-xl $spacing-lg;
+    border-radius: 8px;
+    text-align: center;
+
+    a {
+      color: $background-dark;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .featured-movie {
+    width: 100%;
+    height: 80vh;
+    margin-bottom: $spacing-xl;
+
+    .featured-backdrop {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.9) 0%,
+          rgba(0, 0, 0, 0.7) 50%,
+          rgba(0, 0, 0, 0.4) 100%
+        );
+      }
+    }
+
+    .featured-content {
+      position: relative;
+      max-width: 650px;
+      padding: $spacing-xl;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: $spacing-lg;
+        color: $text-light;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+        @media (max-width: $tablet) {
+          font-size: 2.5rem;
+          margin-bottom: $spacing-md;
+        }
+      }
+
+      p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: $spacing-xl;
+        color: $text-light;
+        opacity: 0.9;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+        @media (max-width: $tablet) {
+          font-size: 1rem;
+          margin-bottom: $spacing-lg;
+        }
+      }
+
+      .action-buttons {
+        @include button-container;
+        margin-top: auto;
+      }
+
+      .action-button {
+        &.primary {
+          @include button-primary;
+        }
+
+        &.secondary {
+          @include button-secondary;
+        }
+      }
+    }
+  }
+
+  .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: $spacing-lg;
+    padding: 0 $spacing-xl;
+    
+    @media (max-width: $tablet) {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: $spacing-md;
+      padding: 0 $spacing-lg;
+    }
+  }
+}
+
+// Loading state
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  color: $text-light;
+  font-size: 1.2rem;
+} 

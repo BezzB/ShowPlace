@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchTopMovie } from '../api/tmdb';
+import { FaPlay, FaInfoCircle } from 'react-icons/fa';
+import './LandingPage.scss';
 
 function LandingPage() {
   const [topMovie, setTopMovie] = useState(null);
@@ -30,19 +32,22 @@ function LandingPage() {
       {topMovie && (
         <div className="hero-section" 
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-            url(https://image.tmdb.org/t/p/original${topMovie.backdrop_path})`
+            backgroundImage: `url(https://image.tmdb.org/t/p/original${topMovie.backdrop_path})`
           }}>
           <div className="hero-content">
             <h1>{topMovie.title}</h1>
             <p>{topMovie.overview}</p>
-            <Link to={`/movie/${topMovie.id}`} className="cta-button">
-              Learn More
-            </Link>
+            <div className="cta-buttons">
+              <Link to={`/movie/${topMovie.id}`} className="cta-button">
+                <FaPlay /> Watch Now
+              </Link>
+              <Link to={`/movie/${topMovie.id}`} className="cta-button secondary">
+                <FaInfoCircle /> More Info
+              </Link>
+            </div>
           </div>
         </div>
       )}
-      {/* Rest of your landing page content */}
     </div>
   );
 }

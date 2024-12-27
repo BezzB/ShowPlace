@@ -1,0 +1,146 @@
+// Colors
+$primary-color: #e50914;
+$secondary-color: #f40612;
+$background-dark: #141414;
+$background-darker: #0b0b0b;
+$text-light: #ffffff;
+$text-gray: #737373;
+$overlay-dark: rgba(0, 0, 0, 0.75);
+
+// Gradients
+$premium-gradient: linear-gradient(45deg, #FFD700, #FFA500);
+$dark-gradient: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.8));
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$spacing-xl: 3rem;
+
+// Breakpoints
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1024px;
+$large-desktop: 1440px;
+
+// Animations
+@mixin hover-scale {
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+@mixin fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+// Shadows
+$card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); 
+
+// Shared Button Styles
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md $spacing-lg;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  min-width: 180px;
+  height: 48px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  svg, i {
+    margin-right: $spacing-xs;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+
+    svg, i {
+      transform: translateX(3px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+  color: $text-light;
+  box-shadow: 0 4px 15px rgba($primary-color, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 15%));
+    box-shadow: 0 6px 20px rgba($primary-color, 0.4);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transform: translateX(-100%);
+    transition: 0.5s;
+  }
+
+  &:hover::before {
+    transform: translateX(100%);
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background: rgba(255, 255, 255, 0.08);
+  color: $text-light;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+}
+
+@mixin button-container {
+  display: flex;
+  gap: $spacing-md;
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+
+    > * {
+      width: 100%;
+      margin-bottom: $spacing-xs;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

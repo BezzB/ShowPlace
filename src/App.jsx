@@ -8,12 +8,14 @@ import PricingPlans from './components/subscription/PricingPlans';
 import LandingPage from './pages/LandingPage';
 import Homecard from './components/pages/Home/Homecard';
 import MovieDetails from './pages/MovieDetails';
+import ScrollToTop from './components/common/ScrollToTop';
 
 function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
         <Router>
+          <ScrollToTop />
           <div className="app">
             <Navigation />
             <Routes>
