@@ -29,10 +29,10 @@
     "svgo": "^3.0.2",
     "web-vitals": "^2.1.4",
     "workbox-background-sync": "^6.6.0",
-    "stripe": "^latest",
-    "firebase": "^latest",
-    "analytics": "^latest",
-    "shaka-player": "^latest"
+    "stripe": "^12.0.0",
+    "firebase": "^9.23.0",
+    "analytics": "^0.3.0",
+    "shaka-player": "^4.3.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
