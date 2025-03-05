@@ -1,0 +1,17 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "serviceworker": true
+  },
+  "extends": [
+    "react-app",
+    "react-app/jest"
+  ],
+  "globals": {
+    "self": "readonly"
+  },
+  "rules": {
+    "no-restricted-globals": ["error", "event", "fdescribe"]
+  }
+}

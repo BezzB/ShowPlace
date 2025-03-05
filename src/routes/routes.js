@@ -82,5 +82,5 @@ export const routes = [
   {
     path: "/settings",
     element: SettingsPage,
-  }
-]; 
+  },
+];

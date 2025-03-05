@@ -1,18 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { tmdbService } from '../../services/tmdb.service';
-import { getImageUrl } from '../../config/tmdb.config';
 import { streamingService } from '../../services/streamingService';
 import LoadingSpinner from '../common/LoadingSpinner';
+import shaka from 'shaka-player';
 import './WatchPage.scss';
 import { WatchNavBar } from './WatchNavBar';
 
 export const MovieWatchPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
-  const [streamUrl, setStreamUrl] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const videoRef = useRef(null);
+  const playerRef = useRef(null);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    const initPlayer = async () => {
+      try {
+        shaka.polyfill.installAll();
+        if (!shaka.Player.isBrowserSupported()) {
+          throw new Error('Browser not supported for video playback');
+        }
+
+        const player = new shaka.Player(videoRef.current);
+        playerRef.current = player;
+
+        player.addEventListener('error', (event) => {
+          setError(`Error: ${event.detail.message}`);
+        });
+
+        // Configure player UI
+        const ui = new shaka.ui.Overlay(
+          player,
+          videoRef.current.parentElement,
+          videoRef.current
+        );
+
+        const controls = ui.getControls();
+        const config = {
+          controlPanelElements: [
+            'play_pause',
+            'time_and_duration',
+            'spacer',
+            'volume',
+            'fullscreen',
+          ],
+          addSeekBar: true,
+          addBigPlayButton: true,
+          seekBarColors: {
+            base: 'rgba(255, 255, 255, 0.3)',
+            buffered: 'rgba(255, 255, 255, 0.5)',
+            played: '#E50914',
+          },
+        };
+        ui.configure(config);
+
+      } catch (error) {
+        console.error('Error initializing Shaka Player:', error);
+        setError('Error initializing video player');
+      }
+    };
+
+    initPlayer();
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -20,8 +79,15 @@ export const MovieWatchPage = () => {
         setLoading(true);
         const data = await tmdbService.getMovieDetails(id);
         setMovie(data);
+        const url = await streamingService.getBestSource('movie', id);
+
+        if (playerRef.current && url) {
+          await playerRef.current.load(url);
+          videoRef.current.play();
+        }
       } catch (error) {
         console.error('Error:', error);
+        setError('Error loading movie data');
       } finally {
         setLoading(false);
       }
@@ -30,16 +96,8 @@ export const MovieWatchPage = () => {
     fetchMovie();
   }, [id]);
 
-  useEffect(() => {
-    const getStreamUrl = async () => {
-      const url = await streamingService.getBestSource('movie', id);
-      setStreamUrl(url);
-    };
-
-    getStreamUrl();
-  }, [id]);
-
   if (loading) return <LoadingSpinner />;
+  if (error) return <div className="error-message">{error}</div>;
   if (!movie) return <div className="error-message">Movie not found</div>;
 
   return (
@@ -51,34 +109,21 @@ export const MovieWatchPage = () => {
 
       <div className="video-section">
         <div className="video-container">
-          <iframe
-            src={streamUrl}
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            allowFullScreen
-            title={movie.title}
-          ></iframe>
+          <video
+            ref={videoRef}
+            className="shaka-video"
+          />
         </div>
       </div>
 
       <div className="info-section">
-        <div className="movie-info">
-          <img src={getImageUrl(movie.poster_path)} alt={movie.title} className="poster" />
-          <div className="details">
-            <h1>{movie.title}</h1>
-            <div className="meta">
-              <span>{new Date(movie.release_date).getFullYear()}</span>
-              <span>{movie.runtime} min</span>
-              <span>{movie.vote_average.toFixed(1)} ⭐</span>
-            </div>
-            <p className="overview">{movie.overview}</p>
-          </div>
+        <h1>{movie.title}</h1>
+        <p>{movie.overview}</p>
+        <div className="metadata">
+          <span>Release Date: {movie.release_date}</span>
+          <span>Rating: {movie.vote_average}/10</span>
         </div>
-        <button className="back-button" onClick={() => navigate(-1)}>
-          <i className="fas fa-arrow-left"></i> Back
-        </button>
       </div>
     </div>
   );
-}; 
+};

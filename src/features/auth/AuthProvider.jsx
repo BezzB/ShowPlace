@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { MOCK_USER } from '../../data/mockUser';
 
 export const AuthContext = createContext(null);
@@ -6,6 +7,7 @@ export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -29,11 +31,13 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('user');
   };
 
+  const isWatchPage = location.pathname.includes('/watch/');
+
   const value = {
-    user,
+    user: isWatchPage ? MOCK_USER : user,
     login,
     logout,
-    premium: user?.premium || false,
+    premium: isWatchPage ? true : (user?.premium || false),
     loading
   };
 
@@ -46,4 +50,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-} 
+}

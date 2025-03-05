@@ -27,10 +27,6 @@ const MovieCard = ({ movie }) => {
   const mediaType = title ? 'movie' : 'tv';
 
   const handleWatch = () => {
-    if (!auth?.user) {
-      navigate('/login');
-      return;
-    }
     navigate(`/watch/${mediaType}/${id}`);
   };
 
@@ -73,4 +69,4 @@ const MovieCard = ({ movie }) => {
   );
 };
 
-export default MovieCard; 
+export default MovieCard;
